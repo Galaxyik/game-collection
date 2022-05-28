@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./lambda/index",
-    "p:checj": "npx prettier index --check",
-    "p:run": "npx prettier index --write"
+    "p:check": "npx prettier lambda --check",
+    "p:run": "npx prettier lambda --write"
   },
   "repository": {
     "type": "git",
