@@ -4,7 +4,7 @@
   "description": "Game Collection Skill for Alexa",
   "main": "index.js",
   "scripts": {
-    "run": "node ./lambda/index",
+    "start": "node ./lambda/index",
     "p:checj": "npx prettier index --check",
     "p:run": "npx prettier index --write"
   },
