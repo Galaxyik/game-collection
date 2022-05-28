@@ -1,0 +1,19 @@
+{
+  "name": "game-collection",
+  "version": "1.0.0",
+  "description": "Game Collection Skill for Alexa",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Galaxyik/game-collection.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Galaxyik/game-collection/issues"
+  },
+  "homepage": "https://github.com/Galaxyik/game-collection#readme"
+}
