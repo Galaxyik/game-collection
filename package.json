@@ -4,7 +4,9 @@
   "description": "Game Collection Skill for Alexa",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "run": "node ./lambda/index",
+    "p:checj": "npx prettier index --check",
+    "p:run": "npx prettier index --write"
   },
   "repository": {
     "type": "git",
