@@ -4,14 +4,17 @@
         "node": true
     },
     "extends": [
-        "eslint:recommended",
-        "airbnb"
+        "airbnb",
+        "prettier"
     ],
+    "plugins": ["prettier"],
     "parserOptions": {
         "ecmaVersion": 13,
         "sourceType": "module"
     },
     "rules": {
+        "prettier/prettier": ["error"],
+        "linebreak-style": ["error", "windows"],
         "no-console": "off"
     }
 }
