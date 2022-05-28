@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./lambda/index",
     "p:check": "npx prettier lambda --check",
-    "p:run": "npx prettier lambda --write"
+    "p:write": "npx prettier lambda --write"
   },
   "repository": {
     "type": "git",
