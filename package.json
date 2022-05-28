@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Galaxyik/game-collection/issues"
   },
-  "homepage": "https://github.com/Galaxyik/game-collection#readme"
+  "homepage": "https://github.com/Galaxyik/game-collection#readme",
+  "dependencies": {
+    "ask-sdk": "^2.12.1"
+  }
 }
