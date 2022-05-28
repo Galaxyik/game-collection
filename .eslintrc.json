@@ -3,15 +3,13 @@
         "es2021": true,
         "node": true
     },
-    "plugins": [
-        "prettier"
-    ],
     "extends": [
-        "airbnb-base", 
-        "prettier"
+        "eslint:recommended",
+        "airbnb"
     ],
     "parserOptions": {
-        "ecmaVersion": "latest"
+        "ecmaVersion": 13,
+        "sourceType": "module"
     },
     "rules": {
         "no-console": "off"
