@@ -141,6 +141,12 @@ function shoot() {
       }
     }
   }
+
+  if(row < 0 || row >= boardSize || col < 0 || col >= boardSize) {
+    console.log('Error. The ship should already be sunk!');
+    process.exit(-1); 
+  }
+
   shotRow = row;
   shotCol = col;
   boardShots[row][col] = `${boardShots[row][col][0]}X`;
