@@ -1,5 +1,12 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-plusplus */
+
+// ---- TODO remove; for testing only ----
+const readline = require('readline/promises');
+const { stdin: input, stdout: output } = require('process');
+// ---------------------------------------
+
 const ships = {
   battleship: {
     count: 1,
@@ -41,17 +48,46 @@ const neutralState = {
 let state = null;
 
 let enemyShipsSunk = 0;
+let ownShipsSunk = 0;
 
 const boardSize = 10;
 
 const boardShots = new Array(boardSize);
-const boardPieces = new Array(boardSize);
+let boardPieces = new Array(boardSize);
 
 let shotRow = 0;
 let shotCol = 0;
 
-(function main() {
+(async function main() {
   initBoards();
+  boardPieces = selectPiecesBoard();
+
+  // ---- Tesing ---------------
+  const rl = readline.createInterface({ input, output });
+
+  let skipPlayer = false;
+  while(true) {
+    if(!skipPlayer) {
+      const inputRow = await rl.question('Row: ');
+      const inputCol = await rl.question('Col: ');
+
+      const playerTurnAgain = playerShot(inputRow, inputCol);
+      printBoard(boardPieces);
+      if(playerTurnAgain) {
+        console.log('Its your turn again');
+        continue;
+      }
+    }
+    skipPlayer = false;
+    shoot();
+    const shotResult = await rl.question('shootResult: ');
+    const kiTurnAgain = hitOrMiss(shotResult);
+    printBoard(boardShots);
+    if(kiTurnAgain) {
+      console.log('Its my turn again');
+      skipPlayer = true;
+    }
+  }
 })();
 
 /**
@@ -68,6 +104,21 @@ function initBoards() {
     }
   }
 }
+
+function selectPiecesBoard() {
+   return [
+     ['10','00','00','00','00','10','10','10','00','10'],
+     ['10','00','00','00','00','00','00','00','00','10'],
+     ['10','00','10','10','10','10','00','00','00','10'],
+     ['10','00','00','00','00','00','00','10','00','00'],
+     ['10','00','10','10','00','00','00','10','00','00'],
+     ['00','00','00','00','00','00','00','00','00','00'],
+     ['00','00','00','00','00','00','00','00','00','00'],
+     ['10','00','00','00','10','10','10','10','00','00'],
+     ['10','00','00','00','00','00','00','00','00','00'],
+     ['00','00','00','10','10','10','00','00','10','10']
+   ]
+};
 
 /* function placePiece(row, col, dir, ship) {
   if (!Object.prototype.hasOwnProperty.call(ships, ship)) {
@@ -110,11 +161,8 @@ function shoot() {
   } else {
     // A ship is hit
     const shotDir = Object.keys(state.possDirections)[0];
-
-    console.log(boardShots[shotRow][shotCol][0]);
     if (boardShots[shotRow][shotCol][0] !== '0') {
       // The previous shot was a hit
-      console.log('The previous shot was a hit');
       if (shotDir === 'N' || shotDir === 'S') {
         row = shotRow + state.possDirections[shotDir];
         col = shotCol;
@@ -126,7 +174,6 @@ function shoot() {
 
     if (boardShots[shotRow][shotCol][0] === '0') {
       // The previous shot was a miss
-      console.log('The previous shot was a miss');
       if (shotDir === 'N' || shotDir === 'S') {
         row = state.firstShotRow + state.possDirections[shotDir];
         col = shotCol;
@@ -145,7 +192,7 @@ function shoot() {
   shotRow = row;
   shotCol = col;
   boardShots[row][col] = `${boardShots[row][col][0]}X`;
-  console.log(`Schießen auf Row: ${row}, Col: ${col}`);
+  console.log(`Shoot at row: ${row + 1}, col: ${col + 1}`);
 }
 
 /**
@@ -158,25 +205,27 @@ function genShootCord() {
 /**
  * Handles the result of a shot (hit, miss, sunk).
  *
- * @param {string} input - Indicates whether the shot was a hit (HIT), a miss
+ * @param {string} shotResult - Indicates whether the shot was a hit (HIT), a miss
  * (MISS), or whether the ship sank (SUNK)
+ * @returns true if the AI has another turn (on a hit / sunk), false otherwise
  */
-function hitOrMiss(input) {
-  switch (input.trim().toUpperCase()) {
+function hitOrMiss(shotResult) {
+  switch (shotResult.trim().toUpperCase()) {
     case 'HIT': {
       hit();
-      break;
+      return true;
     }
     case 'MISS': {
       miss();
-      break;
+      return false;
     }
     case 'SUNK': {
       sunk();
-      break;
+      return true;
     }
     default: {
       console.log('Error wrong input');
+      return false;
     }
   }
 }
@@ -330,10 +379,108 @@ function addFirstLastImplicitShots(rowPos, colPos) {
   }
 }
 
+/**
+ * Handles the player's shot.
+ *
+ * @param {integer} inputRow Row the player says (starting with 1 up to the size of the board)
+ * @param {integer} inputCol Column the player says (starting with 1 up to the size of the board)
+ * @returns true if the player has another turn (on a hit / wrong coordinates), false otherwise
+ */
+function playerShot(inputRow, inputCol) {
+  // Transform row and colum index -> row 1 for the player is row 0 in code
+  const row = inputRow - 1;
+  const col = inputCol - 1;
+
+  // Check bounds
+  if (row < 0 || row >= boardSize || col < 0 || col >= boardSize) {
+    console.log(
+      `Out of bounds! The coordinates have to be between 1 and ${boardSize}.`
+    );
+    return true;
+  }
+
+  // Update board
+  boardPieces[row][col] = `${boardPieces[row][col][0]}X`;
+
+  if (boardPieces[row][col][0] === '1') {
+    // The shot hits a ship
+    if (
+      checkAliveVertically(row, col, directions.N) ||
+      checkAliveVertically(row, col, directions.S) ||
+      checkAliveHorizontally(row, col, directions.W) ||
+      checkAliveHorizontally(row, col, directions.E)
+    ) {
+      // The ship still has unhit fields
+      console.log('HIT');
+    } else {
+      // The ship's last unhit field is hit and it sinks
+      ownShipsSunk += 1;
+      console.log('SUNK');
+    }
+    return true;
+  }
+
+  // The shot misses
+  console.log('MISS');
+  return false;
+}
+
+/**
+ * Check if the ship is vertical and if there is a spot that hasn't been hit yet.
+ *
+ * @param {*} row where the shot hit
+ * @param {*} col where the shot hit
+ * @param {*} dir in which to check
+ * @returns true if there is a field that hasn't been hit, false otherwise
+ */
+function checkAliveVertically(row, col, dir) {
+  let alive = false;
+  let checkRow = row + dir;
+
+  while (
+    checkRow >= 0 &&
+    checkRow < boardSize &&
+    boardPieces[checkRow][col][0] === '1'
+  ) {
+    alive = alive || boardPieces[checkRow][col][1] === '0';
+    checkRow += dir;
+  }
+  return alive;
+}
+
+/**
+ * Check if the ship is horizontal and if there is a spot that hasn't been hit yet.
+ *
+ * @param {*} row where the shot hit
+ * @param {*} col where the shot hit
+ * @param {*} dir in which to check
+ * @returns true if there is a field that hasn't been hit, false otherwise
+ */
+function checkAliveHorizontally(row, col, dir) {
+  let alive = false;
+  let checkCol = col + dir;
+
+  while (
+    checkCol >= 0 &&
+    checkCol < boardSize &&
+    boardPieces[row][checkCol][0] === '1'
+  ) {
+    alive = alive || boardPieces[row][checkCol][1] === '0';
+    checkCol += dir;
+  }
+  return alive;
+}
+
 function checkWin() {
   if (enemyShipsSunk >= shipsCount) {
-    console.log('Du hast verloren, alle deine Schiffe wurden versenkt!');
+    console.log('You loose, all your ships were sunk!');
+    return 'PLoose';
   }
+  if(ownShipsSunk >= shipsCount) {
+    console.log('You win, all my ships were sunk!')
+    return 'PWin';
+  }
+  return '';
 }
 
 // eslint-disable-next-line no-unused-vars
