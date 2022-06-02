@@ -26,7 +26,7 @@ function playGame() {
 
   if (tries < maxTries) {
     rl.question(
-      "Your options are 'rock', 'paper', 'sissors'. Choose one.\n",
+      "Your options are 'rock', 'paper', 'scissors'. Choose one.\n",
       (answer) => {
         console.log(
           `\nYou have chosen ${answer.toLowerCase()} and your opponent has chosen ${computerChoice.toLowerCase()}.\n`
