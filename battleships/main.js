@@ -47,7 +47,7 @@ const boardSize = 10;
 const boardShots = new Array(boardSize);
 const boardPieces = new Array(boardSize);
 
-let shotRow = 0; // TODO update when shooting
+let shotRow = 0;
 let shotCol = 0;
 
 (function main() {
@@ -67,11 +67,6 @@ function initBoards() {
       boardShots[row][col] = '00';
     }
   }
-
-  /* boardPieces[5][5] = '1X';
-      boardPieces[5][6] = '1X';
-      boardPieces[5][7] = '10';
-      boardPieces[5][8] = '10'; */
 }
 
 /* function placePiece(row, col, dir, ship) {
@@ -142,9 +137,9 @@ function shoot() {
     }
   }
 
-  if(row < 0 || row >= boardSize || col < 0 || col >= boardSize) {
+  if (row < 0 || row >= boardSize || col < 0 || col >= boardSize) {
     console.log('Error. The ship should already be sunk!');
-    process.exit(-1); 
+    process.exit(-1);
   }
 
   shotRow = row;
@@ -167,7 +162,7 @@ function genShootCord() {
  * (MISS), or whether the ship sank (SUNK)
  */
 function hitOrMiss(input) {
-  switch (input.toUpperCase()) {
+  switch (input.trim().toUpperCase()) {
     case 'HIT': {
       hit();
       break;
@@ -237,7 +232,6 @@ function sunk() {
  */
 function updatePossShotDirHit() {
   const direction = Object.keys(state.possDirections)[0];
-
   // The first shot (N) or second shot (S) after the first hit is a hit
   // therefore the ship cannot lie horizontally
   if (direction === 'N' || direction === 'S') {
