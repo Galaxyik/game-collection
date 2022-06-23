@@ -66,14 +66,14 @@ let shotCol = 0;
   const rl = readline.createInterface({ input, output });
 
   let skipPlayer = false;
-  while(true) {
-    if(!skipPlayer) {
+  while (true) {
+    if (!skipPlayer) {
       const inputRow = await rl.question('Row: ');
       const inputCol = await rl.question('Col: ');
 
       const playerTurnAgain = playerShot(inputRow, inputCol);
       printBoard(boardPieces);
-      if(playerTurnAgain) {
+      if (playerTurnAgain) {
         console.log('Its your turn again');
         continue;
       }
@@ -83,7 +83,7 @@ let shotCol = 0;
     const shotResult = await rl.question('shootResult: ');
     const kiTurnAgain = hitOrMiss(shotResult);
     printBoard(boardShots);
-    if(kiTurnAgain) {
+    if (kiTurnAgain) {
       console.log('Its my turn again');
       skipPlayer = true;
     }
@@ -106,19 +106,19 @@ function initBoards() {
 }
 
 function selectPiecesBoard() {
-   return [
-     ['10','00','00','00','00','10','10','10','00','10'],
-     ['10','00','00','00','00','00','00','00','00','10'],
-     ['10','00','10','10','10','10','00','00','00','10'],
-     ['10','00','00','00','00','00','00','10','00','00'],
-     ['10','00','10','10','00','00','00','10','00','00'],
-     ['00','00','00','00','00','00','00','00','00','00'],
-     ['00','00','00','00','00','00','00','00','00','00'],
-     ['10','00','00','00','10','10','10','10','00','00'],
-     ['10','00','00','00','00','00','00','00','00','00'],
-     ['00','00','00','10','10','10','00','00','10','10']
-   ]
-};
+  return [
+    ['10', '00', '00', '00', '00', '10', '10', '10', '00', '10'],
+    ['10', '00', '00', '00', '00', '00', '00', '00', '00', '10'],
+    ['10', '00', '10', '10', '10', '10', '00', '00', '00', '10'],
+    ['10', '00', '00', '00', '00', '00', '00', '10', '00', '00'],
+    ['10', '00', '10', '10', '00', '00', '00', '10', '00', '00'],
+    ['00', '00', '00', '00', '00', '00', '00', '00', '00', '00'],
+    ['00', '00', '00', '00', '00', '00', '00', '00', '00', '00'],
+    ['10', '00', '00', '00', '10', '10', '10', '10', '00', '00'],
+    ['10', '00', '00', '00', '00', '00', '00', '00', '00', '00'],
+    ['00', '00', '00', '10', '10', '10', '00', '00', '10', '10']
+  ];
+}
 
 /* function placePiece(row, col, dir, ship) {
   if (!Object.prototype.hasOwnProperty.call(ships, ship)) {
@@ -161,6 +161,7 @@ function shoot() {
   } else {
     // A ship is hit
     const shotDir = Object.keys(state.possDirections)[0];
+
     if (boardShots[shotRow][shotCol][0] !== '0') {
       // The previous shot was a hit
       if (shotDir === 'N' || shotDir === 'S') {
@@ -170,9 +171,7 @@ function shoot() {
         row = shotRow;
         col = shotCol + state.possDirections[shotDir];
       }
-    }
-
-    if (boardShots[shotRow][shotCol][0] === '0') {
+    } else if (boardShots[shotRow][shotCol][0] === '0') {
       // The previous shot was a miss
       if (shotDir === 'N' || shotDir === 'S') {
         row = state.firstShotRow + state.possDirections[shotDir];
@@ -182,11 +181,6 @@ function shoot() {
         col = state.firstShotCol + state.possDirections[shotDir];
       }
     }
-  }
-
-  if (row < 0 || row >= boardSize || col < 0 || col >= boardSize) {
-    console.log('Error. The ship should already be sunk!');
-    process.exit(-1);
   }
 
   shotRow = row;
@@ -248,6 +242,15 @@ function hit() {
     updatePossShotDirHit();
   }
   ensureShotDirBounds();
+
+  // Catches the case when the affected ship is on the edge of the board and
+  // should already be sunk, but the player says HIT
+  if (typeof Object.keys(state.possDirections)[0] === 'undefined') {
+    console.log(
+      'Error. The ship should already be sunk and will be treated as such!'
+    );
+    hitOrMiss('SUNK');
+  }
 }
 
 /**
@@ -258,6 +261,7 @@ function miss() {
     // A ship is hit but the shot misses
     addImplicitShots();
     updatePossShotDirMiss();
+    ensureShotDirBounds();
   } else {
     // Nothing
   }
@@ -476,8 +480,8 @@ function checkWin() {
     console.log('You loose, all your ships were sunk!');
     return 'PLoose';
   }
-  if(ownShipsSunk >= shipsCount) {
-    console.log('You win, all my ships were sunk!')
+  if (ownShipsSunk >= shipsCount) {
+    console.log('You win, all my ships were sunk!');
     return 'PWin';
   }
   return '';
