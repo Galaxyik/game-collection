@@ -8,41 +8,41 @@ const { stdin: input, stdout: output } = require('process');
 // ---------------------------------------
 
 const ships = {
-  battleship: {
-    count: 1,
-    size: 5
-  },
-  cruiser: {
-    count: 2,
-    size: 4
-  },
-  destroyer: {
-    count: 3,
-    size: 3
-  },
-  submarine: {
-    count: 4,
-    size: 2
-  }
+    battleship: {
+        count: 1,
+        size: 5
+    },
+    cruiser: {
+        count: 2,
+        size: 4
+    },
+    destroyer: {
+        count: 3,
+        size: 3
+    },
+    submarine: {
+        count: 4,
+        size: 2
+    }
 };
 
 // Calculates how many ships there are
 const shipsCount = Object.keys(ships).reduce(
-  (acc, ship) => acc + ships[ship].count,
-  0
+    (acc, ship) => acc + ships[ship].count,
+    0
 );
 
 const directions = {
-  N: -1,
-  S: 1,
-  W: -1,
-  E: 1
+    N: -1,
+    S: 1,
+    W: -1,
+    E: 1
 };
 
 const neutralState = {
-  possDirections: { ...directions },
-  firstShotRow: 0,
-  firstShotCol: 0
+    possDirections: { ...directions },
+    firstShotRow: 0,
+    firstShotCol: 0
 };
 
 let state = null;
@@ -59,65 +59,65 @@ let shotRow = 0;
 let shotCol = 0;
 
 (async function main() {
-  initBoards();
-  boardPieces = selectPiecesBoard();
+    initBoards();
+    boardPieces = selectPiecesBoard();
 
-  // ---- Tesing ---------------
-  const rl = readline.createInterface({ input, output });
+    // ---- Tesing ---------------
+    const rl = readline.createInterface({ input, output });
 
-  let skipPlayer = false;
-  while (true) {
-    if (!skipPlayer) {
-      const inputRow = await rl.question('Row: ');
-      const inputCol = await rl.question('Col: ');
+    let skipPlayer = false;
+    while (true) {
+        if (!skipPlayer) {
+            const inputRow = await rl.question('Row: ');
+            const inputCol = await rl.question('Col: ');
 
-      const playerTurnAgain = playerShot(inputRow, inputCol);
-      printBoard(boardPieces);
-      if (playerTurnAgain) {
-        console.log('Its your turn again');
-        continue;
-      }
+            const playerTurnAgain = playerShot(inputRow, inputCol);
+            printBoard(boardPieces);
+            if (playerTurnAgain) {
+                console.log('Its your turn again');
+                continue;
+            }
+        }
+        skipPlayer = false;
+        shoot();
+        const shotResult = await rl.question('shootResult: ');
+        const kiTurnAgain = hitOrMiss(shotResult);
+        printBoard(boardShots);
+        if (kiTurnAgain) {
+            console.log('Its my turn again');
+            skipPlayer = true;
+        }
     }
-    skipPlayer = false;
-    shoot();
-    const shotResult = await rl.question('shootResult: ');
-    const kiTurnAgain = hitOrMiss(shotResult);
-    printBoard(boardShots);
-    if (kiTurnAgain) {
-      console.log('Its my turn again');
-      skipPlayer = true;
-    }
-  }
 })();
 
 /**
  * Initializes the pieces board and the shots board with 00
  */
 function initBoards() {
-  for (let row = 0; row < boardSize; row++) {
-    boardPieces[row] = [];
-    boardShots[row] = [];
+    for (let row = 0; row < boardSize; row++) {
+        boardPieces[row] = [];
+        boardShots[row] = [];
 
-    for (let col = 0; col < boardSize; col++) {
-      boardPieces[row][col] = '00';
-      boardShots[row][col] = '00';
+        for (let col = 0; col < boardSize; col++) {
+            boardPieces[row][col] = '00';
+            boardShots[row][col] = '00';
+        }
     }
-  }
 }
 
 function selectPiecesBoard() {
-  return [
-    ['10', '00', '00', '00', '00', '10', '10', '10', '00', '10'],
-    ['10', '00', '00', '00', '00', '00', '00', '00', '00', '10'],
-    ['10', '00', '10', '10', '10', '10', '00', '00', '00', '10'],
-    ['10', '00', '00', '00', '00', '00', '00', '10', '00', '00'],
-    ['10', '00', '10', '10', '00', '00', '00', '10', '00', '00'],
-    ['00', '00', '00', '00', '00', '00', '00', '00', '00', '00'],
-    ['00', '00', '00', '00', '00', '00', '00', '00', '00', '00'],
-    ['10', '00', '00', '00', '10', '10', '10', '10', '00', '00'],
-    ['10', '00', '00', '00', '00', '00', '00', '00', '00', '00'],
-    ['00', '00', '00', '10', '10', '10', '00', '00', '10', '10']
-  ];
+    return [
+        ['10', '00', '00', '00', '00', '10', '10', '10', '00', '10'],
+        ['10', '00', '00', '00', '00', '00', '00', '00', '00', '10'],
+        ['10', '00', '10', '10', '10', '10', '00', '00', '00', '10'],
+        ['10', '00', '00', '00', '00', '00', '00', '10', '00', '00'],
+        ['10', '00', '10', '10', '00', '00', '00', '10', '00', '00'],
+        ['00', '00', '00', '00', '00', '00', '00', '00', '00', '00'],
+        ['00', '00', '00', '00', '00', '00', '00', '00', '00', '00'],
+        ['10', '00', '00', '00', '10', '10', '10', '10', '00', '00'],
+        ['10', '00', '00', '00', '00', '00', '00', '00', '00', '00'],
+        ['00', '00', '00', '10', '10', '10', '00', '00', '10', '10']
+    ];
 }
 
 /* function placePiece(row, col, dir, ship) {
@@ -149,51 +149,51 @@ function selectPiecesBoard() {
  * Shoots at a random field if no ship is hit. Otherwise, it shoots at the ship
  */
 function shoot() {
-  let row = genShootCord();
-  let col = genShootCord();
-  if (state === null) {
-    // No ship is hit
-    while (boardShots[row][col][1] === 'X') {
-      // Field has already yet been shot at
-      row = genShootCord();
-      col = genShootCord();
-    }
-  } else {
-    // A ship is hit
-    const shotDir = Object.keys(state.possDirections)[0];
+    let row = genShootCord();
+    let col = genShootCord();
+    if (state === null) {
+        // No ship is hit
+        while (boardShots[row][col][1] === 'X') {
+            // Field has already yet been shot at
+            row = genShootCord();
+            col = genShootCord();
+        }
+    } else {
+        // A ship is hit
+        const shotDir = Object.keys(state.possDirections)[0];
 
-    if (boardShots[shotRow][shotCol][0] !== '0') {
-      // The previous shot was a hit
-      if (shotDir === 'N' || shotDir === 'S') {
-        row = shotRow + state.possDirections[shotDir];
-        col = shotCol;
-      } else {
-        row = shotRow;
-        col = shotCol + state.possDirections[shotDir];
-      }
-    } else if (boardShots[shotRow][shotCol][0] === '0') {
-      // The previous shot was a miss
-      if (shotDir === 'N' || shotDir === 'S') {
-        row = state.firstShotRow + state.possDirections[shotDir];
-        col = shotCol;
-      } else {
-        row = shotRow;
-        col = state.firstShotCol + state.possDirections[shotDir];
-      }
+        if (boardShots[shotRow][shotCol][0] !== '0') {
+            // The previous shot was a hit
+            if (shotDir === 'N' || shotDir === 'S') {
+                row = shotRow + state.possDirections[shotDir];
+                col = shotCol;
+            } else {
+                row = shotRow;
+                col = shotCol + state.possDirections[shotDir];
+            }
+        } else if (boardShots[shotRow][shotCol][0] === '0') {
+            // The previous shot was a miss
+            if (shotDir === 'N' || shotDir === 'S') {
+                row = state.firstShotRow + state.possDirections[shotDir];
+                col = shotCol;
+            } else {
+                row = shotRow;
+                col = state.firstShotCol + state.possDirections[shotDir];
+            }
+        }
     }
-  }
 
-  shotRow = row;
-  shotCol = col;
-  boardShots[row][col] = `${boardShots[row][col][0]}X`;
-  console.log(`Shoot at row: ${row + 1}, col: ${col + 1}`);
+    shotRow = row;
+    shotCol = col;
+    boardShots[row][col] = `${boardShots[row][col][0]}X`;
+    console.log(`Shoot at row: ${row + 1}, col: ${col + 1}`);
 }
 
 /**
  * @returns random number from 0 to boardSize - 1
  */
 function genShootCord() {
-  return Math.floor(Math.random() * boardSize);
+    return Math.floor(Math.random() * boardSize);
 }
 
 /**
@@ -204,150 +204,150 @@ function genShootCord() {
  * @returns true if the AI has another turn (on a hit / sunk), false otherwise
  */
 function hitOrMiss(shotResult) {
-  switch (shotResult.trim().toUpperCase()) {
-    case 'HIT': {
-      hit();
-      return true;
+    switch (shotResult.trim().toUpperCase()) {
+        case 'HIT': {
+            hit();
+            return true;
+        }
+        case 'MISS': {
+            miss();
+            return false;
+        }
+        case 'SUNK': {
+            sunk();
+            return true;
+        }
+        default: {
+            console.log('Error wrong input');
+            return false;
+        }
     }
-    case 'MISS': {
-      miss();
-      return false;
-    }
-    case 'SUNK': {
-      sunk();
-      return true;
-    }
-    default: {
-      console.log('Error wrong input');
-      return false;
-    }
-  }
 }
 
 /**
  * Handles a ship hit.
  */
 function hit() {
-  boardShots[shotRow][shotCol] = '1X';
-  if (state === null) {
-    // A new ship is hit
-    state = {
-      ...neutralState,
-      firstShotRow: shotRow,
-      firstShotCol: shotCol
-    };
-  } else {
-    // The known ship is hit
-    addImplicitShots();
-    updatePossShotDirHit();
-  }
-  ensureShotDirBounds();
+    boardShots[shotRow][shotCol] = '1X';
+    if (state === null) {
+        // A new ship is hit
+        state = {
+            ...neutralState,
+            firstShotRow: shotRow,
+            firstShotCol: shotCol
+        };
+    } else {
+        // The known ship is hit
+        addImplicitShots();
+        updatePossShotDirHit();
+    }
+    ensureShotDirBounds();
 
-  // Catches the case when the affected ship is on the edge of the board and
-  // should already be sunk, but the player says HIT
-  if (typeof Object.keys(state.possDirections)[0] === 'undefined') {
-    console.log(
-      'Error. The ship should already be sunk and will be treated as such!'
-    );
-    hitOrMiss('SUNK');
-  }
+    // Catches the case when the affected ship is on the edge of the board and
+    // should already be sunk, but the player says HIT
+    if (typeof Object.keys(state.possDirections)[0] === 'undefined') {
+        console.log(
+            'Error. The ship should already be sunk and will be treated as such!'
+        );
+        hitOrMiss('SUNK');
+    }
 }
 
 /**
  * Handles a miss.
  */
 function miss() {
-  if (state != null) {
-    // A ship is hit but the shot misses
-    addImplicitShots();
-    updatePossShotDirMiss();
-    ensureShotDirBounds();
-  } else {
-    // Nothing
-  }
+    if (state != null) {
+        // A ship is hit but the shot misses
+        addImplicitShots();
+        updatePossShotDirMiss();
+        ensureShotDirBounds();
+    } else {
+        // Nothing
+    }
 }
 
 /**
  * Handles the sinking of a ship.
  */
 function sunk() {
-  boardShots[shotRow][shotCol] = '1X';
-  addFirstLastImplicitShots(state.firstShotRow, state.firstShotCol);
-  addFirstLastImplicitShots(shotRow, shotCol);
-  enemyShipsSunk += 1;
-  state = null;
+    boardShots[shotRow][shotCol] = '1X';
+    addFirstLastImplicitShots(state.firstShotRow, state.firstShotCol);
+    addFirstLastImplicitShots(shotRow, shotCol);
+    enemyShipsSunk += 1;
+    state = null;
 
-  checkWin();
+    checkWin();
 }
 
 /**
  * Removes directions where the ship cannot lie.
  */
 function updatePossShotDirHit() {
-  const direction = Object.keys(state.possDirections)[0];
-  // The first shot (N) or second shot (S) after the first hit is a hit
-  // therefore the ship cannot lie horizontally
-  if (direction === 'N' || direction === 'S') {
-    delete state.possDirections.W;
-    delete state.possDirections.E;
-  }
+    const direction = Object.keys(state.possDirections)[0];
+    // The first shot (N) or second shot (S) after the first hit is a hit
+    // therefore the ship cannot lie horizontally
+    if (direction === 'N' || direction === 'S') {
+        delete state.possDirections.W;
+        delete state.possDirections.E;
+    }
 }
 
 /**
  * Ensure that the next shot will be in bound
  */
 function ensureShotDirBounds() {
-  if (shotRow === 0) {
-    delete state.possDirections.N;
-  }
-  if (shotRow === 9) {
-    delete state.possDirections.S;
-  }
-  if (shotCol === 0) {
-    delete state.possDirections.W;
-  }
-  if (shotCol === 9) {
-    delete state.possDirections.E;
-  }
+    if (shotRow === 0) {
+        delete state.possDirections.N;
+    }
+    if (shotRow === 9) {
+        delete state.possDirections.S;
+    }
+    if (shotCol === 0) {
+        delete state.possDirections.W;
+    }
+    if (shotCol === 9) {
+        delete state.possDirections.E;
+    }
 }
 
 /**
  * Removes directions where the ship cannot lie.
  */
 function updatePossShotDirMiss() {
-  const direction = Object.keys(state.possDirections)[0];
-  delete state.possDirections[direction];
+    const direction = Object.keys(state.possDirections)[0];
+    delete state.possDirections[direction];
 }
 
 /**
  * Adds the shots to both sides of the shot implied by a hit
  */
 function addImplicitShots() {
-  if ('N' in state.possDirections || 'S' in state.possDirections) {
-    // The shot was in the direction N or S
-    if (shotCol + directions.W >= 0) {
-      boardShots[shotRow][shotCol + directions.W] = `${
-        boardShots[shotRow][shotCol + directions.W][0]
-      }X`;
+    if ('N' in state.possDirections || 'S' in state.possDirections) {
+        // The shot was in the direction N or S
+        if (shotCol + directions.W >= 0) {
+            boardShots[shotRow][shotCol + directions.W] = `${
+                boardShots[shotRow][shotCol + directions.W][0]
+            }X`;
+        }
+        if (shotCol + directions.E < boardSize) {
+            boardShots[shotRow][shotCol + directions.E] = `${
+                boardShots[shotRow][shotCol + directions.E][0]
+            }X`;
+        }
+    } else {
+        // The shot was in the direction W or E
+        if (shotRow + directions.N >= 0) {
+            boardShots[shotRow + directions.N][shotCol] = `${
+                boardShots[shotRow + directions.N][shotCol][0]
+            }X`;
+        }
+        if (shotRow + directions.S < boardSize) {
+            boardShots[shotRow + directions.S][shotCol] = `${
+                boardShots[shotRow + directions.S][shotCol][0]
+            }X`;
+        }
     }
-    if (shotCol + directions.E < boardSize) {
-      boardShots[shotRow][shotCol + directions.E] = `${
-        boardShots[shotRow][shotCol + directions.E][0]
-      }X`;
-    }
-  } else {
-    // The shot was in the direction W or E
-    if (shotRow + directions.N >= 0) {
-      boardShots[shotRow + directions.N][shotCol] = `${
-        boardShots[shotRow + directions.N][shotCol][0]
-      }X`;
-    }
-    if (shotRow + directions.S < boardSize) {
-      boardShots[shotRow + directions.S][shotCol] = `${
-        boardShots[shotRow + directions.S][shotCol][0]
-      }X`;
-    }
-  }
 }
 
 /**
@@ -365,22 +365,22 @@ function addImplicitShots() {
  * Call this method with the location of the first hit and the last hit of the ship.
  */
 function addFirstLastImplicitShots(rowPos, colPos) {
-  for (let row = -1; row < 2; row++) {
-    for (let col = -1; col < 2; col++) {
-      const newRowPos = rowPos + row;
-      const newColPos = colPos + col;
-      if (
-        newRowPos > 0 &&
-        newRowPos < boardSize &&
-        newColPos > 0 &&
-        newColPos < boardSize
-      ) {
-        boardShots[newRowPos][
-          newColPos
-        ] = `${boardShots[newRowPos][newColPos][0]}X`;
-      }
+    for (let row = -1; row < 2; row++) {
+        for (let col = -1; col < 2; col++) {
+            const newRowPos = rowPos + row;
+            const newColPos = colPos + col;
+            if (
+                newRowPos > 0 &&
+                newRowPos < boardSize &&
+                newColPos > 0 &&
+                newColPos < boardSize
+            ) {
+                boardShots[newRowPos][
+                    newColPos
+                ] = `${boardShots[newRowPos][newColPos][0]}X`;
+            }
+        }
     }
-  }
 }
 
 /**
@@ -391,42 +391,42 @@ function addFirstLastImplicitShots(rowPos, colPos) {
  * @returns true if the player has another turn (on a hit / wrong coordinates), false otherwise
  */
 function playerShot(inputRow, inputCol) {
-  // Transform row and colum index -> row 1 for the player is row 0 in code
-  const row = inputRow - 1;
-  const col = inputCol - 1;
+    // Transform row and colum index -> row 1 for the player is row 0 in code
+    const row = inputRow - 1;
+    const col = inputCol - 1;
 
-  // Check bounds
-  if (row < 0 || row >= boardSize || col < 0 || col >= boardSize) {
-    console.log(
-      `Out of bounds! The coordinates have to be between 1 and ${boardSize}.`
-    );
-    return true;
-  }
-
-  // Update board
-  boardPieces[row][col] = `${boardPieces[row][col][0]}X`;
-
-  if (boardPieces[row][col][0] === '1') {
-    // The shot hits a ship
-    if (
-      checkAliveVertically(row, col, directions.N) ||
-      checkAliveVertically(row, col, directions.S) ||
-      checkAliveHorizontally(row, col, directions.W) ||
-      checkAliveHorizontally(row, col, directions.E)
-    ) {
-      // The ship still has unhit fields
-      console.log('HIT');
-    } else {
-      // The ship's last unhit field is hit and it sinks
-      ownShipsSunk += 1;
-      console.log('SUNK');
+    // Check bounds
+    if (row < 0 || row >= boardSize || col < 0 || col >= boardSize) {
+        console.log(
+            `Out of bounds! The coordinates have to be between 1 and ${boardSize}.`
+        );
+        return true;
     }
-    return true;
-  }
 
-  // The shot misses
-  console.log('MISS');
-  return false;
+    // Update board
+    boardPieces[row][col] = `${boardPieces[row][col][0]}X`;
+
+    if (boardPieces[row][col][0] === '1') {
+        // The shot hits a ship
+        if (
+            checkAliveVertically(row, col, directions.N) ||
+            checkAliveVertically(row, col, directions.S) ||
+            checkAliveHorizontally(row, col, directions.W) ||
+            checkAliveHorizontally(row, col, directions.E)
+        ) {
+            // The ship still has unhit fields
+            console.log('HIT');
+        } else {
+            // The ship's last unhit field is hit and it sinks
+            ownShipsSunk += 1;
+            console.log('SUNK');
+        }
+        return true;
+    }
+
+    // The shot misses
+    console.log('MISS');
+    return false;
 }
 
 /**
@@ -438,18 +438,18 @@ function playerShot(inputRow, inputCol) {
  * @returns true if there is a field that hasn't been hit, false otherwise
  */
 function checkAliveVertically(row, col, dir) {
-  let alive = false;
-  let checkRow = row + dir;
+    let alive = false;
+    let checkRow = row + dir;
 
-  while (
-    checkRow >= 0 &&
-    checkRow < boardSize &&
-    boardPieces[checkRow][col][0] === '1'
-  ) {
-    alive = alive || boardPieces[checkRow][col][1] === '0';
-    checkRow += dir;
-  }
-  return alive;
+    while (
+        checkRow >= 0 &&
+        checkRow < boardSize &&
+        boardPieces[checkRow][col][0] === '1'
+    ) {
+        alive = alive || boardPieces[checkRow][col][1] === '0';
+        checkRow += dir;
+    }
+    return alive;
 }
 
 /**
@@ -461,39 +461,39 @@ function checkAliveVertically(row, col, dir) {
  * @returns true if there is a field that hasn't been hit, false otherwise
  */
 function checkAliveHorizontally(row, col, dir) {
-  let alive = false;
-  let checkCol = col + dir;
+    let alive = false;
+    let checkCol = col + dir;
 
-  while (
-    checkCol >= 0 &&
-    checkCol < boardSize &&
-    boardPieces[row][checkCol][0] === '1'
-  ) {
-    alive = alive || boardPieces[row][checkCol][1] === '0';
-    checkCol += dir;
-  }
-  return alive;
+    while (
+        checkCol >= 0 &&
+        checkCol < boardSize &&
+        boardPieces[row][checkCol][0] === '1'
+    ) {
+        alive = alive || boardPieces[row][checkCol][1] === '0';
+        checkCol += dir;
+    }
+    return alive;
 }
 
 function checkWin() {
-  if (enemyShipsSunk >= shipsCount) {
-    console.log('You loose, all your ships were sunk!');
-    return 'PLoose';
-  }
-  if (ownShipsSunk >= shipsCount) {
-    console.log('You win, all my ships were sunk!');
-    return 'PWin';
-  }
-  return '';
+    if (enemyShipsSunk >= shipsCount) {
+        console.log('You loose, all your ships were sunk!');
+        return 'PLoose';
+    }
+    if (ownShipsSunk >= shipsCount) {
+        console.log('You win, all my ships were sunk!');
+        return 'PWin';
+    }
+    return '';
 }
 
 // eslint-disable-next-line no-unused-vars
 function printBoard(board) {
-  for (let row = 0; row < boardSize; row++) {
-    for (let col = 0; col < boardSize; col++) {
-      process.stdout.write(`${board[row][col]} `);
+    for (let row = 0; row < boardSize; row++) {
+        for (let col = 0; col < boardSize; col++) {
+            process.stdout.write(`${board[row][col]} `);
+        }
+        console.log();
     }
     console.log();
-  }
-  console.log();
 }

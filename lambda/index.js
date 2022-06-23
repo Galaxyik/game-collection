@@ -1,3 +1,3 @@
 (function test() {
-  console.log('Blub!!!');
+    console.log('Blub!!!');
 })();
