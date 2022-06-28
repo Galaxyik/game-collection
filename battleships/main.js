@@ -27,10 +27,7 @@ const ships = {
 };
 
 // Calculates how many ships there are
-const shipsCount = Object.keys(ships).reduce(
-    (acc, ship) => acc + ships[ship].count,
-    0
-);
+const shipsCount = Object.keys(ships).reduce((acc, ship) => acc + ships[ship].count, 0);
 
 const directions = {
     N: -1,
@@ -246,9 +243,7 @@ function hit() {
     // Catches the case when the affected ship is on the edge of the board and
     // should already be sunk, but the player says HIT
     if (typeof Object.keys(state.possDirections)[0] === 'undefined') {
-        console.log(
-            'Error. The ship should already be sunk and will be treated as such!'
-        );
+        console.log('Error. The ship should already be sunk and will be treated as such!');
         hitOrMiss('SUNK');
     }
 }
@@ -369,15 +364,8 @@ function addFirstLastImplicitShots(rowPos, colPos) {
         for (let col = -1; col < 2; col++) {
             const newRowPos = rowPos + row;
             const newColPos = colPos + col;
-            if (
-                newRowPos > 0 &&
-                newRowPos < boardSize &&
-                newColPos > 0 &&
-                newColPos < boardSize
-            ) {
-                boardShots[newRowPos][
-                    newColPos
-                ] = `${boardShots[newRowPos][newColPos][0]}X`;
+            if (newRowPos > 0 && newRowPos < boardSize && newColPos > 0 && newColPos < boardSize) {
+                boardShots[newRowPos][newColPos] = `${boardShots[newRowPos][newColPos][0]}X`;
             }
         }
     }
@@ -397,9 +385,7 @@ function playerShot(inputRow, inputCol) {
 
     // Check bounds
     if (row < 0 || row >= boardSize || col < 0 || col >= boardSize) {
-        console.log(
-            `Out of bounds! The coordinates have to be between 1 and ${boardSize}.`
-        );
+        console.log(`Out of bounds! The coordinates have to be between 1 and ${boardSize}.`);
         return true;
     }
 
@@ -441,11 +427,7 @@ function checkAliveVertically(row, col, dir) {
     let alive = false;
     let checkRow = row + dir;
 
-    while (
-        checkRow >= 0 &&
-        checkRow < boardSize &&
-        boardPieces[checkRow][col][0] === '1'
-    ) {
+    while (checkRow >= 0 && checkRow < boardSize && boardPieces[checkRow][col][0] === '1') {
         alive = alive || boardPieces[checkRow][col][1] === '0';
         checkRow += dir;
     }
@@ -464,11 +446,7 @@ function checkAliveHorizontally(row, col, dir) {
     let alive = false;
     let checkCol = col + dir;
 
-    while (
-        checkCol >= 0 &&
-        checkCol < boardSize &&
-        boardPieces[row][checkCol][0] === '1'
-    ) {
+    while (checkCol >= 0 && checkCol < boardSize && boardPieces[row][checkCol][0] === '1') {
         alive = alive || boardPieces[row][checkCol][1] === '0';
         checkCol += dir;
     }
