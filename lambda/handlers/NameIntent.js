@@ -37,9 +37,8 @@ exports.NameIntentHandler = {
         // Gets the name no matter what utterance was used
         const name = Object.entries(utterancesObject)
             .map((utteranceArray) => utteranceArray.pop())
-            .filter((utterance) =>
-                Object.prototype.hasOwnProperty.call(utterance, 'value')
-            )[0].value.toLowerCase();
+            .filter((utterance) => Object.prototype.hasOwnProperty.call(utterance, 'value'))[0]
+            .value.toLowerCase();
 
         if (!Object.prototype.hasOwnProperty.call(persistentAttributes, 'playerNames')) {
             // Player names array not in DB (e.g. when opening game collection for the first time)
