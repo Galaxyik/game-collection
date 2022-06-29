@@ -35,7 +35,7 @@ exports.NewGameIntentHandler = {
             return null; // TODO
         }
 
-        // GameSelectionIntent is called in the correct state
+        // NewGameIntent is called in the correct state
 
         if (state === 'battleships') {
             // Initialize data for new game
