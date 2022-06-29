@@ -1,6 +1,7 @@
 const Alexa = require('ask-sdk');
 
 const { newGame } = require('../speakOutputs');
+const { selectPiecesBoard } = require('../utils/piecesBoards');
 
 exports.NewGameIntentHandler = {
     canHandle(handlerInput) {
@@ -25,9 +26,9 @@ exports.NewGameIntentHandler = {
 
         if (
             state !== 'battleships' ||
-            state === 'battleships' && 
-            (bData.bState !== 'menuSaveExists' &&
-            bData.bState !== 'menuSaveNotExists')
+            (state === 'battleships' &&
+                bData.bState !== 'menuSaveExists' &&
+                bData.bState !== 'menuSaveNotExists')
         ) {
             // GameSelectionIntent should not be called in this state
 
@@ -37,7 +38,7 @@ exports.NewGameIntentHandler = {
         // GameSelectionIntent is called in the correct state
 
         if (state === 'battleships') {
-            // Initialize new game
+            // Initialize data for new game
             speakOutput = newGame;
 
             sessionAttributes.bData = {
@@ -45,8 +46,9 @@ exports.NewGameIntentHandler = {
                 gameState: null,
                 playerShipsSunk: 0,
                 alexaShipsSunk: 0,
-                alexaShotsBoard: null, // TODO
-                alexaPiecesBoard: null, // TODO
+                // eslint-disable-next-line no-use-before-define
+                alexaShotsBoard: initShotsBoards(),
+                alexaPiecesBoard: selectPiecesBoard(),
                 shotRow: 0,
                 shotCol: 0
             };
@@ -58,3 +60,18 @@ exports.NewGameIntentHandler = {
         return handlerInput.responseBuilder.speak(speakOutput).reprompt(speakOutput).getResponse();
     }
 };
+
+/**
+ * Initializes the shots board with 00
+ */
+function initShotsBoards() {
+    const boardSize = 10;
+    const alexaShotsBoard = new Array(boardSize);
+
+    for (let row = 0; row < boardSize; row++) {
+        alexaShotsBoard[row] = [];
+        for (let col = 0; col < boardSize; col++) {
+            alexaShotsBoard[row][col] = '00';
+        }
+    }
+}
