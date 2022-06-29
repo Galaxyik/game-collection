@@ -33,32 +33,34 @@ exports.GameSelectionIntentHandler = {
         // Get Data from DB
         const persistentAttributes = (await attributesManager.getPersistentAttributes()) || {};
 
-        const selectedGame = handlerInput.requestEnvelope.request.intent.slots.game.value.toLowerCase();
+        const selectedGame =
+            handlerInput.requestEnvelope.request.intent.slots.game.value.toLowerCase();
 
-        if(selectedGame === 'battleships') {
+        if (selectedGame === 'battleships') {
             sessionAttributes.state = 'battleships';
-            
-            if(persistentAttributes.players[persistentAttributes.playerName].battleships.save) {
+
+            if (persistentAttributes.players[sessionAttributes.playerName].battleships.save) {
                 // Save exists
                 speakOutput = battleshipsSave;
 
                 sessionAttributes.b_data = {
                     b_state: 'menuSaveExists'
-                }
+                };
             } else {
                 // Save does not exist
                 speakOutput = battleshipsNoSave;
 
                 sessionAttributes.b_data = {
                     b_state: 'menuSaveNotExists'
-                }
+                };
             }
-            
-        } else if(selectedGame === 'rock paper scissors') {
+        } else if (selectedGame === 'rock paper scissors') {
+            sessionAttributes.state = 'rps';
+
             // TODO
             speakOutput = 'TBA';
-
-            sessionAttributes.state = 'rps';
+        } else {
+            speakOutput = 'The game was not recognized'; // TODO
         }
 
         // Save session attributes
@@ -66,4 +68,4 @@ exports.GameSelectionIntentHandler = {
 
         return handlerInput.responseBuilder.speak(speakOutput).reprompt(speakOutput).getResponse();
     }
-}
+};
