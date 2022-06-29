@@ -30,6 +30,9 @@ exports.NameIntentHandler = {
 
         // NameIntent is called in the correct state
 
+        // Get Data from DB
+        const persistentAttributes = (await attributesManager.getPersistentAttributes()) || {};
+
         const utterancesObject = handlerInput.requestEnvelope.request.intent.slots;
         // Gets the name no matter what utterance was used
         const name = Object.entries(utterancesObject)
@@ -38,20 +41,24 @@ exports.NameIntentHandler = {
                 Object.prototype.hasOwnProperty.call(utterance, 'value')
             )[0].value.toLowerCase();
 
-        // Get Data from DB
-        const persistentAttributes = (await attributesManager.getPersistentAttributes()) || {};
-
         if (!Object.prototype.hasOwnProperty.call(persistentAttributes, 'playerNames')) {
             // Player names array not in DB (e.g. when opening game collection for the first time)
             persistentAttributes.playerNames = [];
+            persistentAttributes.players = {};
         }
 
         const { playerNames } = persistentAttributes;
+        const { players } = persistentAttributes;
         if (playerNames.includes(name)) {
             speakOutput = nameInDB(name);
         } else {
             speakOutput = nameNotInDB(name);
+            // Add player to DB
             playerNames.push(name);
+            players[name] = {
+                battleships: {},
+                rps: {}
+            };
         }
 
         // Update session attributes
