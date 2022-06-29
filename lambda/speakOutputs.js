@@ -11,6 +11,7 @@ const battleshipsNoSave = 'Do you want to start a new game or get an explanation
 
 // battleships: menuSaveExists, menuSaveNotExists
 const newGame = 'Starting new game.';
+const battleshipsExplanation = 'Battleships Explanation TBA';
 
 // battleships: menuSaveExists
 const resumeGame = 'Loading savegame';
@@ -21,5 +22,6 @@ module.exports = {
     battleshipsSave,
     battleshipsNoSave,
     newGame,
+    battleshipsExplanation,
     resumeGame
 };
