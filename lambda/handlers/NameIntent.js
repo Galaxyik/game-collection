@@ -54,6 +54,12 @@ exports.NameIntentHandler = {
             playerNames.push(name);
         }
 
+        // Update session attributes
+        sessionAttributes.playerName = name;
+        sessionAttributes.state = 'gameSelection';
+
+        // Save session and persistent attributes
+        attributesManager.setSessionAttributes(sessionAttributes);
         attributesManager.setPersistentAttributes(persistentAttributes);
         await attributesManager.savePersistentAttributes();
 
