@@ -44,22 +44,22 @@ const neutralState = {
 
 let state = null;
 
-let enemyShipsSunk = 0;
-let ownShipsSunk = 0;
+let playerShipsSunk = 0;
+let alexaShipsSunk = 0;
 
 const boardSize = 10;
 
-const boardShots = new Array(boardSize);
-let boardPieces = new Array(boardSize);
+const alexaShotsBoard = new Array(boardSize);
+let alexaPiecesBoard = new Array(boardSize);
 
 let shotRow = 0;
 let shotCol = 0;
 
 (async function main() {
     initBoards();
-    boardPieces = selectPiecesBoard();
+    alexaPiecesBoard = selectPiecesBoard();
 
-    // ---- Tesing ---------------
+    // ---- Testing ---------------
     const rl = readline.createInterface({ input, output });
 
     let skipPlayer = false;
@@ -69,7 +69,7 @@ let shotCol = 0;
             const inputCol = await rl.question('Col: ');
 
             const playerTurnAgain = playerShot(inputRow, inputCol);
-            printBoard(boardPieces);
+            printBoard(alexaPiecesBoard);
             if (playerTurnAgain) {
                 console.log('Its your turn again');
                 continue;
@@ -79,7 +79,7 @@ let shotCol = 0;
         shoot();
         const shotResult = await rl.question('shootResult: ');
         const kiTurnAgain = hitOrMiss(shotResult);
-        printBoard(boardShots);
+        printBoard(alexaShotsBoard);
         if (kiTurnAgain) {
             console.log('Its my turn again');
             skipPlayer = true;
@@ -92,12 +92,12 @@ let shotCol = 0;
  */
 function initBoards() {
     for (let row = 0; row < boardSize; row++) {
-        boardPieces[row] = [];
-        boardShots[row] = [];
+        alexaPiecesBoard[row] = [];
+        alexaShotsBoard[row] = [];
 
         for (let col = 0; col < boardSize; col++) {
-            boardPieces[row][col] = '00';
-            boardShots[row][col] = '00';
+            alexaPiecesBoard[row][col] = '00';
+            alexaShotsBoard[row][col] = '00';
         }
     }
 }
@@ -150,7 +150,7 @@ function shoot() {
     let col = genShootCord();
     if (state === null) {
         // No ship is hit
-        while (boardShots[row][col][1] === 'X') {
+        while (alexaShotsBoard[row][col][1] === 'X') {
             // Field has already yet been shot at
             row = genShootCord();
             col = genShootCord();
@@ -159,7 +159,7 @@ function shoot() {
         // A ship is hit
         const shotDir = Object.keys(state.possDirections)[0];
 
-        if (boardShots[shotRow][shotCol][0] !== '0') {
+        if (alexaShotsBoard[shotRow][shotCol][0] !== '0') {
             // The previous shot was a hit
             if (shotDir === 'N' || shotDir === 'S') {
                 row = shotRow + state.possDirections[shotDir];
@@ -168,7 +168,7 @@ function shoot() {
                 row = shotRow;
                 col = shotCol + state.possDirections[shotDir];
             }
-        } else if (boardShots[shotRow][shotCol][0] === '0') {
+        } else if (alexaShotsBoard[shotRow][shotCol][0] === '0') {
             // The previous shot was a miss
             if (shotDir === 'N' || shotDir === 'S') {
                 row = state.firstShotRow + state.possDirections[shotDir];
@@ -182,7 +182,7 @@ function shoot() {
 
     shotRow = row;
     shotCol = col;
-    boardShots[row][col] = `${boardShots[row][col][0]}X`;
+    alexaShotsBoard[row][col] = `${alexaShotsBoard[row][col][0]}X`;
     console.log(`Shoot at row: ${row + 1}, col: ${col + 1}`);
 }
 
@@ -225,7 +225,7 @@ function hitOrMiss(shotResult) {
  * Handles a ship hit.
  */
 function hit() {
-    boardShots[shotRow][shotCol] = '1X';
+    alexaShotsBoard[shotRow][shotCol] = '1X';
     if (state === null) {
         // A new ship is hit
         state = {
@@ -266,10 +266,10 @@ function miss() {
  * Handles the sinking of a ship.
  */
 function sunk() {
-    boardShots[shotRow][shotCol] = '1X';
+    alexaShotsBoard[shotRow][shotCol] = '1X';
     addFirstLastImplicitShots(state.firstShotRow, state.firstShotCol);
     addFirstLastImplicitShots(shotRow, shotCol);
-    enemyShipsSunk += 1;
+    playerShipsSunk += 1;
     state = null;
 
     checkWin();
@@ -321,25 +321,25 @@ function addImplicitShots() {
     if ('N' in state.possDirections || 'S' in state.possDirections) {
         // The shot was in the direction N or S
         if (shotCol + directions.W >= 0) {
-            boardShots[shotRow][shotCol + directions.W] = `${
-                boardShots[shotRow][shotCol + directions.W][0]
+            alexaShotsBoard[shotRow][shotCol + directions.W] = `${
+                alexaShotsBoard[shotRow][shotCol + directions.W][0]
             }X`;
         }
         if (shotCol + directions.E < boardSize) {
-            boardShots[shotRow][shotCol + directions.E] = `${
-                boardShots[shotRow][shotCol + directions.E][0]
+            alexaShotsBoard[shotRow][shotCol + directions.E] = `${
+                alexaShotsBoard[shotRow][shotCol + directions.E][0]
             }X`;
         }
     } else {
         // The shot was in the direction W or E
         if (shotRow + directions.N >= 0) {
-            boardShots[shotRow + directions.N][shotCol] = `${
-                boardShots[shotRow + directions.N][shotCol][0]
+            alexaShotsBoard[shotRow + directions.N][shotCol] = `${
+                alexaShotsBoard[shotRow + directions.N][shotCol][0]
             }X`;
         }
         if (shotRow + directions.S < boardSize) {
-            boardShots[shotRow + directions.S][shotCol] = `${
-                boardShots[shotRow + directions.S][shotCol][0]
+            alexaShotsBoard[shotRow + directions.S][shotCol] = `${
+                alexaShotsBoard[shotRow + directions.S][shotCol][0]
             }X`;
         }
     }
@@ -365,7 +365,9 @@ function addFirstLastImplicitShots(rowPos, colPos) {
             const newRowPos = rowPos + row;
             const newColPos = colPos + col;
             if (newRowPos > 0 && newRowPos < boardSize && newColPos > 0 && newColPos < boardSize) {
-                boardShots[newRowPos][newColPos] = `${boardShots[newRowPos][newColPos][0]}X`;
+                alexaShotsBoard[newRowPos][
+                    newColPos
+                ] = `${alexaShotsBoard[newRowPos][newColPos][0]}X`;
             }
         }
     }
@@ -390,9 +392,9 @@ function playerShot(inputRow, inputCol) {
     }
 
     // Update board
-    boardPieces[row][col] = `${boardPieces[row][col][0]}X`;
+    alexaPiecesBoard[row][col] = `${alexaPiecesBoard[row][col][0]}X`;
 
-    if (boardPieces[row][col][0] === '1') {
+    if (alexaPiecesBoard[row][col][0] === '1') {
         // The shot hits a ship
         if (
             checkAliveVertically(row, col, directions.N) ||
@@ -404,7 +406,7 @@ function playerShot(inputRow, inputCol) {
             console.log('HIT');
         } else {
             // The ship's last unhit field is hit and it sinks
-            ownShipsSunk += 1;
+            alexaShipsSunk += 1;
             console.log('SUNK');
         }
         return true;
@@ -427,8 +429,8 @@ function checkAliveVertically(row, col, dir) {
     let alive = false;
     let checkRow = row + dir;
 
-    while (checkRow >= 0 && checkRow < boardSize && boardPieces[checkRow][col][0] === '1') {
-        alive = alive || boardPieces[checkRow][col][1] === '0';
+    while (checkRow >= 0 && checkRow < boardSize && alexaPiecesBoard[checkRow][col][0] === '1') {
+        alive = alive || alexaPiecesBoard[checkRow][col][1] === '0';
         checkRow += dir;
     }
     return alive;
@@ -446,19 +448,19 @@ function checkAliveHorizontally(row, col, dir) {
     let alive = false;
     let checkCol = col + dir;
 
-    while (checkCol >= 0 && checkCol < boardSize && boardPieces[row][checkCol][0] === '1') {
-        alive = alive || boardPieces[row][checkCol][1] === '0';
+    while (checkCol >= 0 && checkCol < boardSize && alexaPiecesBoard[row][checkCol][0] === '1') {
+        alive = alive || alexaPiecesBoard[row][checkCol][1] === '0';
         checkCol += dir;
     }
     return alive;
 }
 
 function checkWin() {
-    if (enemyShipsSunk >= shipsCount) {
+    if (playerShipsSunk >= shipsCount) {
         console.log('You loose, all your ships were sunk!');
         return 'PLoose';
     }
-    if (ownShipsSunk >= shipsCount) {
+    if (alexaShipsSunk >= shipsCount) {
         console.log('You win, all my ships were sunk!');
         return 'PWin';
     }
