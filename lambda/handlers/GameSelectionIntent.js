@@ -43,15 +43,15 @@ exports.GameSelectionIntentHandler = {
                 // Save exists
                 speakOutput = battleshipsSave;
 
-                sessionAttributes.b_data = {
-                    b_state: 'menuSaveExists'
+                sessionAttributes.bData = {
+                    bState: 'menuSaveExists'
                 };
             } else {
                 // Save does not exist
                 speakOutput = battleshipsNoSave;
 
-                sessionAttributes.b_data = {
-                    b_state: 'menuSaveNotExists'
+                sessionAttributes.bData = {
+                    bState: 'menuSaveNotExists'
                 };
             }
         } else if (selectedGame === 'rock paper scissors') {
