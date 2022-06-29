@@ -42,7 +42,7 @@ const neutralState = {
     firstShotCol: 0
 };
 
-let state = null;
+let gameState = null;
 
 let playerShipsSunk = 0;
 let alexaShipsSunk = 0;
@@ -148,7 +148,7 @@ function selectPiecesBoard() {
 function shoot() {
     let row = genShootCord();
     let col = genShootCord();
-    if (state === null) {
+    if (gameState === null) {
         // No ship is hit
         while (alexaShotsBoard[row][col][1] === 'X') {
             // Field has already yet been shot at
@@ -157,25 +157,25 @@ function shoot() {
         }
     } else {
         // A ship is hit
-        const shotDir = Object.keys(state.possDirections)[0];
+        const shotDir = Object.keys(gameState.possDirections)[0];
 
         if (alexaShotsBoard[shotRow][shotCol][0] !== '0') {
             // The previous shot was a hit
             if (shotDir === 'N' || shotDir === 'S') {
-                row = shotRow + state.possDirections[shotDir];
+                row = shotRow + gameState.possDirections[shotDir];
                 col = shotCol;
             } else {
                 row = shotRow;
-                col = shotCol + state.possDirections[shotDir];
+                col = shotCol + gameState.possDirections[shotDir];
             }
         } else if (alexaShotsBoard[shotRow][shotCol][0] === '0') {
             // The previous shot was a miss
             if (shotDir === 'N' || shotDir === 'S') {
-                row = state.firstShotRow + state.possDirections[shotDir];
+                row = gameState.firstShotRow + gameState.possDirections[shotDir];
                 col = shotCol;
             } else {
                 row = shotRow;
-                col = state.firstShotCol + state.possDirections[shotDir];
+                col = gameState.firstShotCol + gameState.possDirections[shotDir];
             }
         }
     }
@@ -226,9 +226,9 @@ function hitOrMiss(shotResult) {
  */
 function hit() {
     alexaShotsBoard[shotRow][shotCol] = '1X';
-    if (state === null) {
+    if (gameState === null) {
         // A new ship is hit
-        state = {
+        gameState = {
             ...neutralState,
             firstShotRow: shotRow,
             firstShotCol: shotCol
@@ -242,7 +242,7 @@ function hit() {
 
     // Catches the case when the affected ship is on the edge of the board and
     // should already be sunk, but the player says HIT
-    if (typeof Object.keys(state.possDirections)[0] === 'undefined') {
+    if (typeof Object.keys(gameState.possDirections)[0] === 'undefined') {
         console.log('Error. The ship should already be sunk and will be treated as such!');
         hitOrMiss('SUNK');
     }
@@ -252,7 +252,7 @@ function hit() {
  * Handles a miss.
  */
 function miss() {
-    if (state != null) {
+    if (gameState != null) {
         // A ship is hit but the shot misses
         addImplicitShots();
         updatePossShotDirMiss();
@@ -267,10 +267,10 @@ function miss() {
  */
 function sunk() {
     alexaShotsBoard[shotRow][shotCol] = '1X';
-    addFirstLastImplicitShots(state.firstShotRow, state.firstShotCol);
+    addFirstLastImplicitShots(gameState.firstShotRow, gameState.firstShotCol);
     addFirstLastImplicitShots(shotRow, shotCol);
     playerShipsSunk += 1;
-    state = null;
+    gameState = null;
 
     checkWin();
 }
@@ -279,12 +279,12 @@ function sunk() {
  * Removes directions where the ship cannot lie.
  */
 function updatePossShotDirHit() {
-    const direction = Object.keys(state.possDirections)[0];
+    const direction = Object.keys(gameState.possDirections)[0];
     // The first shot (N) or second shot (S) after the first hit is a hit
     // therefore the ship cannot lie horizontally
     if (direction === 'N' || direction === 'S') {
-        delete state.possDirections.W;
-        delete state.possDirections.E;
+        delete gameState.possDirections.W;
+        delete gameState.possDirections.E;
     }
 }
 
@@ -293,16 +293,16 @@ function updatePossShotDirHit() {
  */
 function ensureShotDirBounds() {
     if (shotRow === 0) {
-        delete state.possDirections.N;
+        delete gameState.possDirections.N;
     }
     if (shotRow === 9) {
-        delete state.possDirections.S;
+        delete gameState.possDirections.S;
     }
     if (shotCol === 0) {
-        delete state.possDirections.W;
+        delete gameState.possDirections.W;
     }
     if (shotCol === 9) {
-        delete state.possDirections.E;
+        delete gameState.possDirections.E;
     }
 }
 
@@ -310,15 +310,15 @@ function ensureShotDirBounds() {
  * Removes directions where the ship cannot lie.
  */
 function updatePossShotDirMiss() {
-    const direction = Object.keys(state.possDirections)[0];
-    delete state.possDirections[direction];
+    const direction = Object.keys(gameState.possDirections)[0];
+    delete gameState.possDirections[direction];
 }
 
 /**
  * Adds the shots to both sides of the shot implied by a hit
  */
 function addImplicitShots() {
-    if ('N' in state.possDirections || 'S' in state.possDirections) {
+    if ('N' in gameState.possDirections || 'S' in gameState.possDirections) {
         // The shot was in the direction N or S
         if (shotCol + directions.W >= 0) {
             alexaShotsBoard[shotRow][shotCol + directions.W] = `${
