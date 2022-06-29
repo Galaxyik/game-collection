@@ -30,7 +30,7 @@ exports.NewGameIntentHandler = {
                 bData.bState !== 'menuSaveExists' &&
                 bData.bState !== 'menuSaveNotExists')
         ) {
-            // GameSelectionIntent should not be called in this state
+            // NewGameIntent should not be called in this state
 
             return null; // TODO
         }
