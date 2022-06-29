@@ -9,9 +9,13 @@ const battleshipsSave =
     'Do you want to start a new game, resume from the old save, or get an explanation?';
 const battleshipsNoSave = 'Do you want to start a new game or get an explanation?';
 
+// battleships: menuSaveExists, menuSaveNotExists
+const newGame = 'Starting new game.';
+
 module.exports = {
     nameInDB,
     nameNotInDB,
     battleshipsSave,
-    battleshipsNoSave
+    battleshipsNoSave,
+    newGame
 };
