@@ -108,7 +108,7 @@ exports.ShotIntentHandler = {
 
                     speakOutput = battleshipsPlayerWin(playerWins, alexaWins);
                     sessionAttributes.bData = {
-                        bState: 'playerWin'
+                        bState: 'gameOver'
                     };
                     break;
                 }
