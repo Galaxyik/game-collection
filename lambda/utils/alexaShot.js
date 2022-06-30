@@ -55,7 +55,6 @@ exports.shoot = (bData) => {
     shotRow = row;
     shotCol = col;
     alexaShotsBoard[row][col] = `${alexaShotsBoard[row][col][0]}X`;
-    console.log(`Shoot at row: ${row + 1}, col: ${col + 1}`);
 
     return {
         shotRow: row,
