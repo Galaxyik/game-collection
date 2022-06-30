@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk');
 
-const { resumeGame } = require('../speakOutputs');
+const { noState, wrongState, resumeGame } = require('../speakOutputs');
 
 exports.ResumeGameIntentHandler = {
     canHandle(handlerInput) {
@@ -16,8 +16,11 @@ exports.ResumeGameIntentHandler = {
 
         if (!Object.prototype.hasOwnProperty.call(sessionAttributes, 'state')) {
             // Session attributes do not contain state, game collection was not started correctly
-
-            return null; // TODO
+            speakOutput = noState;
+            return handlerInput.responseBuilder
+                .speak(speakOutput)
+                .reprompt(speakOutput)
+                .getResponse();
         }
 
         const { state } = sessionAttributes;
@@ -28,8 +31,11 @@ exports.ResumeGameIntentHandler = {
             (state === 'battleships' && bData.bState !== 'menuSaveExists')
         ) {
             // ResumeGameIntent should not be called in this state
-
-            return null; // TODO
+            speakOutput = wrongState;
+            return handlerInput.responseBuilder
+                .speak(speakOutput)
+                .reprompt(speakOutput)
+                .getResponse();
         }
 
         // ResumeGameIntent is called in the correct state
@@ -41,7 +47,8 @@ exports.ResumeGameIntentHandler = {
             // Load savegame data
             speakOutput = resumeGame;
             const { save } = persistentAttributes.players[sessionAttributes.playerName].battleships;
-            sessionAttributes.bData = Object.assign({ bState: 'playerTurn' }, save);
+            sessionAttributes.bData = Object.assign({}, save);
+            sessionAttributes.bData.bState = 'playerTurn';
         }
 
         // Save session attributes

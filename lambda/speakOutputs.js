@@ -1,3 +1,9 @@
+// Game collection not started correctly
+const noState = "I'm sorry, game collection was not started correctly. Please try again.";
+
+// Wrong state
+const wrongState = "You can't do that here.";
+
 // userSelection
 const nameInDB = (name) =>
     `Hi ${name}. What do you want to play? You can choose from Rock Paper Scissors and Battleships.`;
@@ -8,6 +14,10 @@ const nameNotInDB = (name) =>
 const battleshipsSave =
     'Do you want to start a new game, resume from the old save, or get an explanation?';
 const battleshipsNoSave = 'Do you want to start a new game or get an explanation?';
+
+// go to gameSelection after battleships
+const goToGameSelection =
+    'What do you want to play? You can choose from Rock Paper Scissors and Battleships.';
 
 // battleships: menuSaveExists, menuSaveNotExists
 const newGame = "Starting new game. It's your turn.";
@@ -43,11 +53,20 @@ const battleshipsHitIsSunkWin = (playerWins, alexaWins) =>
         alexaWins
     )}`;
 
+// battleships: playerTurn
+const battleshipsSavingGame = 'Do you want to continue the game or close the app?';
+
+// battleships: saveGame
+const battleshipsContinue = "Continuing the game. It's your turn.";
+
 module.exports = {
+    noState,
+    wrongState,
     nameInDB,
     nameNotInDB,
     battleshipsSave,
     battleshipsNoSave,
+    goToGameSelection,
     newGame,
     battleshipsExplanation,
     resumeGame,
@@ -60,5 +79,7 @@ module.exports = {
     battleshipsHitIsSunk,
     battleshipsAlexaMiss,
     battleshipsAlexaWin,
-    battleshipsHitIsSunkWin
+    battleshipsHitIsSunkWin,
+    battleshipsSavingGame,
+    battleshipsContinue
 };

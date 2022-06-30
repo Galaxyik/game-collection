@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk');
 
-const { newGame } = require('../speakOutputs');
+const { noState, wrongState, newGame } = require('../speakOutputs');
 const { selectPiecesBoard } = require('../utils/piecesBoards');
 const { boardSize } = require('../utils/battleshipsConstants');
 
@@ -18,8 +18,11 @@ exports.NewGameIntentHandler = {
 
         if (!Object.prototype.hasOwnProperty.call(sessionAttributes, 'state')) {
             // Session attributes do not contain state, game collection was not started correctly
-
-            return null; // TODO
+            speakOutput = noState;
+            return handlerInput.responseBuilder
+                .speak(speakOutput)
+                .reprompt(speakOutput)
+                .getResponse();
         }
 
         const { state } = sessionAttributes;
@@ -32,8 +35,11 @@ exports.NewGameIntentHandler = {
                 bData.bState !== 'menuSaveNotExists')
         ) {
             // NewGameIntent should not be called in this state
-
-            return null; // TODO
+            speakOutput = wrongState;
+            return handlerInput.responseBuilder
+                .speak(speakOutput)
+                .reprompt(speakOutput)
+                .getResponse();
         }
 
         // NewGameIntent is called in the correct state

@@ -1,12 +1,12 @@
 const Alexa = require('ask-sdk');
 
-const { noState, wrongState, battleshipsExplanation } = require('../speakOutputs');
+const { noState, wrongState, battleshipsSavingGame } = require('../speakOutputs');
 
-exports.ExplanationIntentHandler = {
+exports.SaveGameIntentHandler = {
     canHandle(handlerInput) {
         return (
             Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest' &&
-            Alexa.getIntentName(handlerInput.requestEnvelope) === 'ExplanationIntent'
+            Alexa.getIntentName(handlerInput.requestEnvelope) === 'SaveGameIntent'
         );
     },
     async handle(handlerInput) {
@@ -26,13 +26,8 @@ exports.ExplanationIntentHandler = {
         const { state } = sessionAttributes;
         const bData = sessionAttributes.bData || {};
 
-        if (
-            state !== 'battleships' ||
-            (state === 'battleships' &&
-                bData.bState !== 'menuSaveExists' &&
-                bData.bState !== 'menuSaveNotExists')
-        ) {
-            // ExplanationIntent should not be called in this state
+        if (state !== 'battleships' || (state === 'battleships' && bData.bState !== 'playerTurn')) {
+            // SaveGameIntentHandler should not be called in this state
             speakOutput = wrongState;
             return handlerInput.responseBuilder
                 .speak(speakOutput)
@@ -40,11 +35,23 @@ exports.ExplanationIntentHandler = {
                 .getResponse();
         }
 
-        // ExplanationIntent is called in the correct state
+        // SaveGameIntent is called in the correct state
+
+        // Get Data from DB
+        const persistentAttributes = (await attributesManager.getPersistentAttributes()) || {};
 
         if (state === 'battleships') {
-            speakOutput = battleshipsExplanation;
+            // Save current bData
+            persistentAttributes.players[sessionAttributes.playerName].battleships.save = bData;
+
+            speakOutput = battleshipsSavingGame;
+            bData.bState = 'saveGame';
         }
+
+        // Save session and persistent attributes
+        attributesManager.setSessionAttributes(sessionAttributes);
+        attributesManager.setPersistentAttributes(persistentAttributes);
+        await attributesManager.savePersistentAttributes();
 
         return handlerInput.responseBuilder.speak(speakOutput).reprompt(speakOutput).getResponse();
     }

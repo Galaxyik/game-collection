@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk');
 
-const { nameInDB, nameNotInDB } = require('../speakOutputs');
+const { noState, wrongState, nameInDB, nameNotInDB } = require('../speakOutputs');
 
 exports.NameIntentHandler = {
     canHandle(handlerInput) {
@@ -16,16 +16,22 @@ exports.NameIntentHandler = {
 
         if (!Object.prototype.hasOwnProperty.call(sessionAttributes, 'state')) {
             // Session attributes do not contain state, game collection was not started correctly
-
-            return null; // TODO
+            speakOutput = noState;
+            return handlerInput.responseBuilder
+                .speak(speakOutput)
+                .reprompt(speakOutput)
+                .getResponse();
         }
 
         const { state } = sessionAttributes;
 
         if (state !== 'userSelection') {
             // NameIntent should not be called in this state
-
-            return null; // TODO
+            speakOutput = wrongState;
+            return handlerInput.responseBuilder
+                .speak(speakOutput)
+                .reprompt(speakOutput)
+                .getResponse();
         }
 
         // NameIntent is called in the correct state
