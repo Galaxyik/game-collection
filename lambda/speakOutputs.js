@@ -21,7 +21,8 @@ const battleshipsOutOfBounds = (boardSize) =>
     `Out of bounds! The coordinates have to be between 1 and ${boardSize}. It's your turn again`;
 const battleshipsHit = "Hit! It's your turn again.";
 const battleshipsSunk = "Ship sunk! It's your turn again.";
-const battleshipsMiss = "Miss! It's my turn.";
+const battleshipsMiss = (outputRow, outputCol) =>
+    `Miss! It's my turn. I shoot at row ${outputRow} column ${outputCol}.`;
 const battleshipsPlayerWin = (playerWins, alexaWins) =>
     `You win, you sank all my ships! In total you won ${playerWins} times and I won ${alexaWins} times.`;
 

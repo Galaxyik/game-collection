@@ -9,6 +9,7 @@ const {
     battleshipsPlayerWin
 } = require('../speakOutputs');
 const { boardSize, directions, shipsCount } = require('../utils/battleshipsConstants');
+const { shoot } = require('../utils/alexaShot');
 
 let alexaPiecesBoard;
 let alexaShipsSunk;
@@ -43,7 +44,7 @@ exports.ShotIntentHandler = {
         // ShotIntent is called in the correct state
 
         if (state === 'battleships') {
-            // Handler player shot
+            // Handle player shot
             const inputRow = handlerInput.requestEnvelope.request.intent.slots.row.value;
             const inputCol = handlerInput.requestEnvelope.request.intent.slots.col.value;
 
@@ -67,8 +68,14 @@ exports.ShotIntentHandler = {
                     break;
                 }
                 case 'miss': {
-                    speakOutput = battleshipsMiss;
                     bData.alexaPiecesBoard = alexaPiecesBoard;
+
+                    const shootObj = shoot(bData);
+                    bData.shotRow = shootObj.shotRow;
+                    bData.shotCol = shootObj.shotCol;
+                    bData.alexaShotsBoard = shootObj.alexaShotsBoard;
+
+                    speakOutput = battleshipsMiss(shootObj.outputRow, shootObj.outputCol);
                     bData.bState = 'alexaTurn';
                     break;
                 }
