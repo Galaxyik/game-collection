@@ -74,4 +74,5 @@ function initShotsBoards() {
             alexaShotsBoard[row][col] = '00';
         }
     }
+    return alexaShotsBoard;
 }
