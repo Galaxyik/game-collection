@@ -14,6 +14,8 @@
     },
     "rules": {
         "linebreak-style": ["error", "windows"],
-        "no-console": "off"
+        "no-console": "off",
+        "prefer-object-spread": "off",
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
     }
 }
