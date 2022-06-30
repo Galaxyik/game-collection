@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk');
 
-const { battleshipsExplanation } = require('../speakOutputs');
+const { noState, wrongState, battleshipsExplanation } = require('../speakOutputs');
 
 exports.ExplanationIntentHandler = {
     canHandle(handlerInput) {
@@ -16,8 +16,11 @@ exports.ExplanationIntentHandler = {
 
         if (!Object.prototype.hasOwnProperty.call(sessionAttributes, 'state')) {
             // Session attributes do not contain state, game collection was not started correctly
-
-            return null; // TODO
+            speakOutput = noState;
+            return handlerInput.responseBuilder
+                .speak(speakOutput)
+                .reprompt(speakOutput)
+                .getResponse();
         }
 
         const { state } = sessionAttributes;
@@ -30,8 +33,11 @@ exports.ExplanationIntentHandler = {
                 bData.bState !== 'menuSaveNotExists')
         ) {
             // ExplanationIntent should not be called in this state
-
-            return null; // TODO
+            speakOutput = wrongState;
+            return handlerInput.responseBuilder
+                .speak(speakOutput)
+                .reprompt(speakOutput)
+                .getResponse();
         }
 
         // ExplanationIntent is called in the correct state

@@ -1,3 +1,9 @@
+// Game collection not started correctly
+const noState = "I'm sorry, game collection was not started correctly. Please try again.";
+
+// Wrong state
+const wrongState = "You can't do that here.";
+
 // userSelection
 const nameInDB = (name) =>
     `Hi ${name}. What do you want to play? You can choose from Rock Paper Scissors and Battleships.`;
@@ -44,6 +50,8 @@ const battleshipsHitIsSunkWin = (playerWins, alexaWins) =>
     )}`;
 
 module.exports = {
+    noState,
+    wrongState,
     nameInDB,
     nameNotInDB,
     battleshipsSave,

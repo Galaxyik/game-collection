@@ -1,6 +1,8 @@
 const Alexa = require('ask-sdk');
 
 const {
+    noState,
+    wrongState,
     battleshipsHitOrSunk,
     battleshipsHitIsSunk,
     battleshipsHitIsSunkWin,
@@ -24,8 +26,11 @@ exports.ShotResultIntentHandler = {
 
         if (!Object.prototype.hasOwnProperty.call(sessionAttributes, 'state')) {
             // Session attributes do not contain state, game collection was not started correctly
-
-            return null; // TODO
+            speakOutput = noState;
+            return handlerInput.responseBuilder
+                .speak(speakOutput)
+                .reprompt(speakOutput)
+                .getResponse();
         }
 
         const { state } = sessionAttributes;
@@ -33,8 +38,11 @@ exports.ShotResultIntentHandler = {
 
         if (state !== 'battleships' || (state === 'battleships' && bData.bState !== 'alexaTurn')) {
             // HitIntent should not be called in this state
-
-            return null; // TODO
+            speakOutput = wrongState;
+            return handlerInput.responseBuilder
+                .speak(speakOutput)
+                .reprompt(speakOutput)
+                .getResponse();
         }
 
         // HitIntent is called in the correct state
