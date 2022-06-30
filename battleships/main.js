@@ -364,7 +364,7 @@ function addFirstLastImplicitShots(rowPos, colPos) {
         for (let col = -1; col < 2; col++) {
             const newRowPos = rowPos + row;
             const newColPos = colPos + col;
-            if (newRowPos > 0 && newRowPos < boardSize && newColPos > 0 && newColPos < boardSize) {
+            if (newRowPos >= 0 && newRowPos < boardSize && newColPos >= 0 && newColPos < boardSize) {
                 alexaShotsBoard[newRowPos][
                     newColPos
                 ] = `${alexaShotsBoard[newRowPos][newColPos][0]}X`;
