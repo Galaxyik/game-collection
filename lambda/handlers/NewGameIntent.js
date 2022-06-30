@@ -2,6 +2,7 @@ const Alexa = require('ask-sdk');
 
 const { newGame } = require('../speakOutputs');
 const { selectPiecesBoard } = require('../utils/piecesBoards');
+const { boardSize } = require('../utils/battleshipsConstants');
 
 exports.NewGameIntentHandler = {
     canHandle(handlerInput) {
@@ -65,7 +66,6 @@ exports.NewGameIntentHandler = {
  * Initializes the shots board with 00
  */
 function initShotsBoards() {
-    const boardSize = 10;
     const alexaShotsBoard = new Array(boardSize);
 
     for (let row = 0; row < boardSize; row++) {
