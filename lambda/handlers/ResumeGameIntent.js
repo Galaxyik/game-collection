@@ -47,7 +47,8 @@ exports.ResumeGameIntentHandler = {
             // Load savegame data
             speakOutput = resumeGame;
             const { save } = persistentAttributes.players[sessionAttributes.playerName].battleships;
-            sessionAttributes.bData = Object.assign({ bState: 'playerTurn' }, save);
+            sessionAttributes.bData = Object.assign({}, save);
+            sessionAttributes.bData.bState = 'playerTurn';
         }
 
         // Save session attributes
