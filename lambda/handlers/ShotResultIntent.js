@@ -77,7 +77,9 @@ exports.ShotResultIntentHandler = {
                         (await attributesManager.getPersistentAttributes()) || {};
 
                     // Increment high score
-                    persistentAttributes.players[sessionAttributes.playerName].battleships.alexaWins += 1;
+                    persistentAttributes.players[
+                        sessionAttributes.playerName
+                    ].battleships.alexaWins += 1;
 
                     const { playerWins } =
                         persistentAttributes.players[sessionAttributes.playerName].battleships;
@@ -86,7 +88,7 @@ exports.ShotResultIntentHandler = {
 
                     // Save persistent attributes
                     attributesManager.setPersistentAttributes(persistentAttributes);
-                    await attributesManager.savePersistentAttributes();                
+                    await attributesManager.savePersistentAttributes();
 
                     speakOutput = battleshipsHitIsSunkWin(playerWins, alexaWins);
                     sessionAttributes.bData = {
@@ -115,7 +117,9 @@ exports.ShotResultIntentHandler = {
                         (await attributesManager.getPersistentAttributes()) || {};
 
                     // Increment high score
-                    persistentAttributes.players[sessionAttributes.playerName].battleships.alexaWins += 1;
+                    persistentAttributes.players[
+                        sessionAttributes.playerName
+                    ].battleships.alexaWins += 1;
 
                     const { playerWins } =
                         persistentAttributes.players[sessionAttributes.playerName].battleships;
@@ -124,7 +128,7 @@ exports.ShotResultIntentHandler = {
 
                     // Save persistent attributes
                     attributesManager.setPersistentAttributes(persistentAttributes);
-                    await attributesManager.savePersistentAttributes();                
+                    await attributesManager.savePersistentAttributes();
 
                     speakOutput = battleshipsAlexaWin(playerWins, alexaWins);
                     sessionAttributes.bData = {
