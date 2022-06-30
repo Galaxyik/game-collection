@@ -15,6 +15,10 @@ const battleshipsSave =
     'Do you want to start a new game, resume from the old save, or get an explanation?';
 const battleshipsNoSave = 'Do you want to start a new game or get an explanation?';
 
+// go to gameSelection after battleships
+const goToGameSelection =
+    'What do you want to play? You can choose from Rock Paper Scissors and Battleships.';
+
 // battleships: menuSaveExists, menuSaveNotExists
 const newGame = "Starting new game. It's your turn.";
 const battleshipsExplanation = 'Battleships Explanation TBA';
@@ -56,6 +60,7 @@ module.exports = {
     nameNotInDB,
     battleshipsSave,
     battleshipsNoSave,
+    goToGameSelection,
     newGame,
     battleshipsExplanation,
     resumeGame,
