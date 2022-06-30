@@ -44,8 +44,8 @@ exports.ShotIntentHandler = {
 
         if (state === 'battleships') {
             // Handler player shot
-            const inputRow = handlerInput.requestEnvelope.request.intent.slot.row.value;
-            const inputCol = handlerInput.requestEnvelope.request.intent.slot.col.value;
+            const inputRow = handlerInput.requestEnvelope.request.intent.slots.row.value;
+            const inputCol = handlerInput.requestEnvelope.request.intent.slots.col.value;
 
             alexaPiecesBoard = bData.alexaPiecesBoard;
             alexaShipsSunk = bData.alexaShipsSunk;
