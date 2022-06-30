@@ -55,8 +55,14 @@ exports.NameIntentHandler = {
             // Add player to DB
             playerNames.push(name);
             players[name] = {
-                battleships: {},
-                rps: {}
+                battleships: {
+                    playerWins: 0,
+                    alexaWins: 0
+                },
+                rps: {
+                    playerWins: 0,
+                    alexaWins: 0
+                }
             };
         }
 
