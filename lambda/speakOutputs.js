@@ -10,11 +10,11 @@ const battleshipsSave =
 const battleshipsNoSave = 'Do you want to start a new game or get an explanation?';
 
 // battleships: menuSaveExists, menuSaveNotExists
-const newGame = 'Starting new game.';
+const newGame = "Starting new game. It's your turn.";
 const battleshipsExplanation = 'Battleships Explanation TBA';
 
 // battleships: menuSaveExists
-const resumeGame = 'Loading savegame';
+const resumeGame = "Loading savegame. It's your turn.";
 
 // battleships: playerTurn
 const battleshipsOutOfBounds = (boardSize) =>
