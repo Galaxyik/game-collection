@@ -84,10 +84,17 @@ exports.ShotIntentHandler = {
                     const persistentAttributes =
                         (await attributesManager.getPersistentAttributes()) || {};
 
+                    // Increment high score
+                    persistentAttributes.players[sessionAttributes.playerName].battleships.playerWins += 1;
+
                     const { playerWins } =
                         persistentAttributes.players[sessionAttributes.playerName].battleships;
                     const { alexaWins } =
                         persistentAttributes.players[sessionAttributes.playerName].battleships;
+                    
+                    // Save persistent attributes
+                    attributesManager.setPersistentAttributes(persistentAttributes);
+                    await attributesManager.savePersistentAttributes();
 
                     speakOutput = battleshipsPlayerWin(playerWins, alexaWins);
                     sessionAttributes.bData = {
