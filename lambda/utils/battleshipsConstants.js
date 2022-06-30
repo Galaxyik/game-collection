@@ -7,6 +7,12 @@ const directions = {
     E: 1
 };
 
+const neutralState = {
+    possDirections: Object.assign({}, directions),
+    firstShotRow: 0,
+    firstShotCol: 0
+};
+
 const ships = {
     battleship: {
         count: 1,
@@ -32,5 +38,6 @@ const shipsCount = Object.keys(ships).reduce((acc, ship) => acc + ships[ship].co
 module.exports = {
     boardSize,
     directions,
+    neutralState,
     shipsCount
 };

@@ -26,6 +26,23 @@ const battleshipsMiss = (outputRow, outputCol) =>
 const battleshipsPlayerWin = (playerWins, alexaWins) =>
     `You win, you sank all my ships! In total you won ${playerWins} times and I won ${alexaWins} times.`;
 
+// battleships: alexaTurn
+const battleshipsHitOrSunk = (outputRow, outputCol) =>
+    `It's my turn again. I shoot at row ${outputRow} column ${outputCol}.`;
+const battleshipsHitIsSunk = (outputRow, outputCol) =>
+    `The ship should already be sunk and will be treated as such! ${battleshipsHitOrSunk(
+        outputRow,
+        outputCol
+    )}`;
+const battleshipsAlexaMiss = "It's your turn";
+const battleshipsAlexaWin = (playerWins, alexaWins) =>
+    `I win, i sank all your ships. In total I won ${alexaWins} times and you won ${playerWins} times.`;
+const battleshipsHitIsSunkWin = (playerWins, alexaWins) =>
+    `The ship should already be sunk and will be treated as such! ${battleshipsAlexaWin(
+        playerWins,
+        alexaWins
+    )}`;
+
 module.exports = {
     nameInDB,
     nameNotInDB,
@@ -38,5 +55,10 @@ module.exports = {
     battleshipsHit,
     battleshipsSunk,
     battleshipsMiss,
-    battleshipsPlayerWin
+    battleshipsPlayerWin,
+    battleshipsHitOrSunk,
+    battleshipsHitIsSunk,
+    battleshipsAlexaMiss,
+    battleshipsAlexaWin,
+    battleshipsHitIsSunkWin
 };
