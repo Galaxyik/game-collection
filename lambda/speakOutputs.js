@@ -52,6 +52,7 @@ const battleshipsHitIsSunkWin = (playerWins, alexaWins) =>
         playerWins,
         alexaWins
     )}`;
+const battleshipsSavingGame = 'Do you want to continue the game or close the app?';
 
 module.exports = {
     noState,
@@ -73,5 +74,6 @@ module.exports = {
     battleshipsHitIsSunk,
     battleshipsAlexaMiss,
     battleshipsAlexaWin,
-    battleshipsHitIsSunkWin
+    battleshipsHitIsSunkWin,
+    battleshipsSavingGame
 };
