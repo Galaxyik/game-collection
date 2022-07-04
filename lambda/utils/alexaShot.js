@@ -44,9 +44,9 @@ exports.shoot = (bData) => {
             // The previous shot was a miss
             if (shotDir === 'N' || shotDir === 'S') {
                 row = gameState.firstShotRow + gameState.possDirections[shotDir];
-                col = shotCol;
+                col = gameState.firstShotCol;
             } else {
-                row = shotRow;
+                row = gameState.firstShotRow;
                 col = gameState.firstShotCol + gameState.possDirections[shotDir];
             }
         }
