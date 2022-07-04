@@ -91,6 +91,16 @@ function miss() {
         updatePossShotDirMiss();
         ensureShotDirBounds();
     }
+
+    // Catches the case when the affected ship is shot on both ends and all the fields in between
+    // and should already be sunk, but the player says 'miss'
+    if (typeof Object.keys(gameState.possDirections)[0] === 'undefined') {
+        if (hitOrMiss('sunk') === 'sunk') {
+            return 'missIsSunk';
+        }
+        // Alexa wins
+        return 'missIsSunkWin';
+    }
     return 'miss';
 }
 

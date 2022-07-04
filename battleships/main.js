@@ -257,6 +257,13 @@ function miss() {
         addImplicitShots();
         updatePossShotDirMiss();
         ensureShotDirBounds();
+
+        // Catches the case when the affected ship is shot on both ends and all the fields in between
+        // and should already be sunk, but the player says MISS
+        if (typeof Object.keys(gameState.possDirections)[0] === 'undefined') {
+            console.log('Error. The ship should already be sunk and will be treated as such!');
+            hitOrMiss('SUNK');
+        }
     } else {
         // Nothing
     }

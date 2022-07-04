@@ -4,8 +4,8 @@ const {
     noState,
     wrongState,
     battleshipsHitOrSunk,
-    battleshipsHitIsSunk,
-    battleshipsHitIsSunkWin,
+    battleshipsHitOrMissIsSunk,
+    battleshipsHitOrMissIsSunkWin,
     battleshipsAlexaMiss,
     battleshipsAlexaWin
 } = require('../speakOutputs');
@@ -69,6 +69,7 @@ exports.ShotResultIntentHandler = {
                     speakOutput = battleshipsHitOrSunk(shootObj.outputRow, shootObj.outputCol);
                     break;
                 }
+                case 'missIsSunk':
                 case 'hitIsSunk': {
                     // Shoot
                     const shootObj = shoot(bData);
@@ -76,9 +77,13 @@ exports.ShotResultIntentHandler = {
                     bData.shotCol = shootObj.shotCol;
                     bData.alexaShotsBoard = shootObj.alexaShotsBoard;
 
-                    speakOutput = battleshipsHitIsSunk(shootObj.outputRow, shootObj.outputCol);
+                    speakOutput = battleshipsHitOrMissIsSunk(
+                        shootObj.outputRow,
+                        shootObj.outputCol
+                    );
                     break;
                 }
+                case 'missIsSunkWin':
                 case 'hitIsSunkWin': {
                     // Get Data from DB
                     const persistentAttributes =
@@ -98,7 +103,7 @@ exports.ShotResultIntentHandler = {
                     attributesManager.setPersistentAttributes(persistentAttributes);
                     await attributesManager.savePersistentAttributes();
 
-                    speakOutput = battleshipsHitIsSunkWin(playerWins, alexaWins);
+                    speakOutput = battleshipsHitOrMissIsSunkWin(playerWins, alexaWins);
                     sessionAttributes.bData = {
                         bState: 'gameOver'
                     };
