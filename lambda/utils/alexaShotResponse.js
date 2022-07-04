@@ -25,11 +25,11 @@ function hitOrMiss(shotResult, bData) {
     let result;
     switch (shotResult) {
         case 'hit': {
-            result = hit();
+            result = hit(bData);
             break;
         }
         case 'miss': {
-            result = miss();
+            result = miss(bData);
             break;
         }
         case 'sunk': {
@@ -53,7 +53,7 @@ function hitOrMiss(shotResult, bData) {
 /**
  * Handles a ship hit.
  */
-function hit() {
+function hit(bData) {
     alexaShotsBoard[shotRow][shotCol] = '1X';
     if (gameState === null) {
         // A new ship is hit
@@ -71,8 +71,8 @@ function hit() {
 
     // Catches the case when the affected ship is on the edge of the board and
     // should already be sunk, but the player says 'hit'
-    if (typeof Object.keys(gameState.possDirections)[0] === 'undefined') {
-        if (hitOrMiss('sunk') === 'sunk') {
+    if (Object.keys(gameState.possDirections).length === 0) {
+        if (hitOrMiss('sunk', bData) === 'sunk') {
             return 'hitIsSunk';
         }
         // Alexa wins
@@ -84,22 +84,22 @@ function hit() {
 /**
  * Handles a miss.
  */
-function miss() {
+function miss(bData) {
     if (gameState !== null) {
         // A ship is hit but the shot misses
         addImplicitShots();
         updatePossShotDirMiss();
         ensureShotDirBounds();
-    }
 
-    // Catches the case when the affected ship is shot on both ends and all the fields in between
-    // and should already be sunk, but the player says 'miss'
-    if (typeof Object.keys(gameState.possDirections)[0] === 'undefined') {
-        if (hitOrMiss('sunk') === 'sunk') {
-            return 'missIsSunk';
+        // Catches the case when the affected ship is shot on both ends and all the fields in between
+        // and should already be sunk, but the player says 'miss'
+        if (Object.keys(gameState.possDirections).length === 0) {
+            if (hitOrMiss('sunk', bData) === 'sunk') {
+                return 'missIsSunk';
+            }
+            // Alexa wins
+            return 'missIsSunkWin';
         }
-        // Alexa wins
-        return 'missIsSunkWin';
     }
     return 'miss';
 }
