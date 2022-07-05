@@ -72,7 +72,7 @@ function hit(bData) {
     // Catches the case when the affected ship is on the edge of the board and
     // should already be sunk, but the player says 'hit'
     if (Object.keys(gameState.possDirections).length === 0) {
-        if (hitOrMiss('sunk', bData) === 'sunk') {
+        if (hitOrMiss('sunk', bData).result === 'sunk') {
             return 'hitIsSunk';
         }
         // Alexa wins
@@ -94,7 +94,7 @@ function miss(bData) {
         // Catches the case when the affected ship is shot on both ends and all the fields in between
         // and should already be sunk, but the player says 'miss'
         if (Object.keys(gameState.possDirections).length === 0) {
-            if (hitOrMiss('sunk', bData) === 'sunk') {
+            if (hitOrMiss('sunk', bData).result === 'sunk') {
                 return 'missIsSunk';
             }
             // Alexa wins
