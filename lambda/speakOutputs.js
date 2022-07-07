@@ -5,6 +5,7 @@ const noState = "I'm sorry, game collection was not started correctly. Please tr
 const wrongState = "You can't do that here.";
 
 // userSelection
+const requestName = 'Welcome to game collection. Who is playing?';
 const nameInDB = (name) =>
     `Hi ${name}. What do you want to play? You can choose from Rock Paper Scissors and Battleships.`;
 const nameNotInDB = (name) =>
@@ -62,6 +63,7 @@ const bsContinue = "Continuing the game. It's your turn.";
 module.exports = {
     noState,
     wrongState,
+    requestName,
     nameInDB,
     nameNotInDB,
     bsMenuSave,
