@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk');
 
-const { noState, wrongState, battleshipsExplanation } = require('../speakOutputs');
+const { noState, wrongState, bsExplanation } = require('../speakOutputs');
 
 exports.ExplanationIntentHandler = {
     canHandle(handlerInput) {
@@ -43,7 +43,7 @@ exports.ExplanationIntentHandler = {
         // ExplanationIntent is called in the correct state
 
         if (state === 'battleships') {
-            speakOutput = battleshipsExplanation;
+            speakOutput = bsExplanation;
         }
 
         return handlerInput.responseBuilder.speak(speakOutput).reprompt(speakOutput).getResponse();

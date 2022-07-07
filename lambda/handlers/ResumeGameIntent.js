@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk');
 
-const { noState, wrongState, resumeGame } = require('../speakOutputs');
+const { noState, wrongState, bsLoadSave } = require('../speakOutputs');
 
 exports.ResumeGameIntentHandler = {
     canHandle(handlerInput) {
@@ -45,7 +45,7 @@ exports.ResumeGameIntentHandler = {
 
         if (state === 'battleships') {
             // Load savegame data
-            speakOutput = resumeGame;
+            speakOutput = bsLoadSave;
             const { save } = persistentAttributes.players[sessionAttributes.playerName].battleships;
             sessionAttributes.bData = Object.assign({}, save);
             sessionAttributes.bData.bState = 'playerTurn';

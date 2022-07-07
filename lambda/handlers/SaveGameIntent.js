@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk');
 
-const { noState, wrongState, battleshipsSavingGame } = require('../speakOutputs');
+const { noState, wrongState, bsContinueClose } = require('../speakOutputs');
 
 exports.SaveGameIntentHandler = {
     canHandle(handlerInput) {
@@ -44,7 +44,7 @@ exports.SaveGameIntentHandler = {
             // Save current bData
             persistentAttributes.players[sessionAttributes.playerName].battleships.save = bData;
 
-            speakOutput = battleshipsSavingGame;
+            speakOutput = bsContinueClose;
             bData.bState = 'saveGame';
         }
 

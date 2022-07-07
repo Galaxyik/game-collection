@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk');
 
-const { noState, wrongState, goToGameSelection } = require('../speakOutputs');
+const { noState, wrongState, bsGoToGS } = require('../speakOutputs');
 
 exports.GoToGameSelectionIntentHandler = {
     canHandle(handlerInput) {
@@ -39,7 +39,7 @@ exports.GoToGameSelectionIntentHandler = {
             sessionAttributes.state = 'gameSelection';
             sessionAttributes.bData = {};
 
-            speakOutput = goToGameSelection;
+            speakOutput = bsGoToGS;
         }
 
         // Save session attributes
