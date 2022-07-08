@@ -1,12 +1,12 @@
 const Alexa = require('ask-sdk');
 
-const { noState, wrongState, battleshipsExplanation } = require('../speakOutputs');
+const { noState, wrongState, bsGoToGS } = require('../speakOutputs');
 
-exports.ExplanationIntentHandler = {
+exports.GoToGameSelectionIntentHandler = {
     canHandle(handlerInput) {
         return (
             Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest' &&
-            Alexa.getIntentName(handlerInput.requestEnvelope) === 'ExplanationIntent'
+            Alexa.getIntentName(handlerInput.requestEnvelope) === 'GoToGameSelectionIntent'
         );
     },
     async handle(handlerInput) {
@@ -26,13 +26,8 @@ exports.ExplanationIntentHandler = {
         const { state } = sessionAttributes;
         const bData = sessionAttributes.bData || {};
 
-        if (
-            state !== 'battleships' ||
-            (state === 'battleships' &&
-                bData.bState !== 'menuSaveExists' &&
-                bData.bState !== 'menuSaveNotExists')
-        ) {
-            // ExplanationIntent should not be called in this state
+        if (state !== 'battleships' || (state === 'battleships' && bData.bState !== 'gameOver')) {
+            // GoToGameSelectionIntent should not be called in this state
             speakOutput = wrongState;
             return handlerInput.responseBuilder
                 .speak(speakOutput)
@@ -40,11 +35,15 @@ exports.ExplanationIntentHandler = {
                 .getResponse();
         }
 
-        // ExplanationIntent is called in the correct state
-
         if (state === 'battleships') {
-            speakOutput = battleshipsExplanation;
+            sessionAttributes.state = 'gameSelection';
+            sessionAttributes.bData = {};
+
+            speakOutput = bsGoToGS;
         }
+
+        // Save session attributes
+        attributesManager.setSessionAttributes(sessionAttributes);
 
         return handlerInput.responseBuilder.speak(speakOutput).reprompt(speakOutput).getResponse();
     }

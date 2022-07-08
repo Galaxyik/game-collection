@@ -62,7 +62,7 @@ let shotCol = 0;
     // ---- Testing ---------------
     const rl = readline.createInterface({ input, output });
 
-    let skipPlayer = false;
+    let skipPlayer = true; // To play normally set to false
     while (true) {
         if (!skipPlayer) {
             const inputRow = await rl.question('Row: ');
@@ -75,7 +75,7 @@ let shotCol = 0;
                 continue;
             }
         }
-        skipPlayer = false;
+        skipPlayer = true; // To play normally set to false
         shoot();
         const shotResult = await rl.question('shootResult: ');
         const kiTurnAgain = hitOrMiss(shotResult);
@@ -172,9 +172,9 @@ function shoot() {
             // The previous shot was a miss
             if (shotDir === 'N' || shotDir === 'S') {
                 row = gameState.firstShotRow + gameState.possDirections[shotDir];
-                col = shotCol;
+                col = gameState.firstShotCol;
             } else {
-                row = shotRow;
+                row = gameState.firstShotRow;
                 col = gameState.firstShotCol + gameState.possDirections[shotDir];
             }
         }
@@ -257,6 +257,13 @@ function miss() {
         addImplicitShots();
         updatePossShotDirMiss();
         ensureShotDirBounds();
+
+        // Catches the case when the affected ship is shot on both ends and all the fields in between
+        // and should already be sunk, but the player says MISS
+        if (typeof Object.keys(gameState.possDirections)[0] === 'undefined') {
+            console.log('Error. The ship should already be sunk and will be treated as such!');
+            hitOrMiss('SUNK');
+        }
     } else {
         // Nothing
     }

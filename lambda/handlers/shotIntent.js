@@ -4,11 +4,11 @@ const Alexa = require('ask-sdk');
 const {
     noState,
     wrongState,
-    battleshipsOutOfBounds,
-    battleshipsHit,
-    battleshipsSunk,
-    battleshipsMiss,
-    battleshipsPlayerWin
+    bsOutOfBounds,
+    bsPlayerHit,
+    bsPlayerSunk,
+    bsPlayerMiss,
+    bsPlayerWin
 } = require('../speakOutputs');
 const { boardSize, directions, shipsCount } = require('../utils/battleshipsConstants');
 const { shoot } = require('../utils/alexaShot');
@@ -61,16 +61,16 @@ exports.ShotIntentHandler = {
 
             switch (playerShot(inputRow, inputCol)) {
                 case 'out of bounds': {
-                    speakOutput = battleshipsOutOfBounds(boardSize);
+                    speakOutput = bsOutOfBounds(boardSize);
                     break;
                 }
                 case 'hit': {
-                    speakOutput = battleshipsHit;
+                    speakOutput = bsPlayerHit;
                     bData.alexaPiecesBoard = alexaPiecesBoard;
                     break;
                 }
                 case 'sunk': {
-                    speakOutput = battleshipsSunk;
+                    speakOutput = bsPlayerSunk;
                     bData.alexaPiecesBoard = alexaPiecesBoard;
                     bData.alexaShipsSunk = alexaShipsSunk;
                     break;
@@ -83,7 +83,7 @@ exports.ShotIntentHandler = {
                     bData.shotCol = shootObj.shotCol;
                     bData.alexaShotsBoard = shootObj.alexaShotsBoard;
 
-                    speakOutput = battleshipsMiss(shootObj.outputRow, shootObj.outputCol);
+                    speakOutput = bsPlayerMiss(shootObj.outputRow, shootObj.outputCol);
                     bData.bState = 'alexaTurn';
                     break;
                 }
@@ -106,7 +106,7 @@ exports.ShotIntentHandler = {
                     attributesManager.setPersistentAttributes(persistentAttributes);
                     await attributesManager.savePersistentAttributes();
 
-                    speakOutput = battleshipsPlayerWin(playerWins, alexaWins);
+                    speakOutput = bsPlayerWin(playerWins, alexaWins);
                     sessionAttributes.bData = {
                         bState: 'gameOver'
                     };

@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk');
 
-const { noState, wrongState, battleshipsContinue } = require('../speakOutputs');
+const { noState, wrongState, bsContinue } = require('../speakOutputs');
 
 exports.ContinueIntentHandler = {
     canHandle(handlerInput) {
@@ -38,7 +38,7 @@ exports.ContinueIntentHandler = {
         // ContinueIntent is called in the correct state
 
         if (state === 'battleships') {
-            speakOutput = battleshipsContinue;
+            speakOutput = bsContinue;
             bData.bState = 'playerTurn';
         }
 

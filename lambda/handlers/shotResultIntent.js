@@ -3,11 +3,11 @@ const Alexa = require('ask-sdk');
 const {
     noState,
     wrongState,
-    battleshipsHitOrSunk,
-    battleshipsHitIsSunk,
-    battleshipsHitIsSunkWin,
-    battleshipsAlexaMiss,
-    battleshipsAlexaWin
+    bsHitSunk,
+    bsMissHitIsSunk,
+    bsMissHitIsSunkWin,
+    bsAlexaMiss,
+    bsAlexaWin
 } = require('../speakOutputs');
 const { hitOrMiss } = require('../utils/alexaShotResponse');
 const { shoot } = require('../utils/alexaShot');
@@ -66,9 +66,10 @@ exports.ShotResultIntentHandler = {
                     bData.shotCol = shootObj.shotCol;
                     bData.alexaShotsBoard = shootObj.alexaShotsBoard;
 
-                    speakOutput = battleshipsHitOrSunk(shootObj.outputRow, shootObj.outputCol);
+                    speakOutput = bsHitSunk(shootObj.outputRow, shootObj.outputCol);
                     break;
                 }
+                case 'missIsSunk':
                 case 'hitIsSunk': {
                     // Shoot
                     const shootObj = shoot(bData);
@@ -76,9 +77,13 @@ exports.ShotResultIntentHandler = {
                     bData.shotCol = shootObj.shotCol;
                     bData.alexaShotsBoard = shootObj.alexaShotsBoard;
 
-                    speakOutput = battleshipsHitIsSunk(shootObj.outputRow, shootObj.outputCol);
+                    speakOutput = bsMissHitIsSunk(
+                        shootObj.outputRow,
+                        shootObj.outputCol
+                    );
                     break;
                 }
+                case 'missIsSunkWin':
                 case 'hitIsSunkWin': {
                     // Get Data from DB
                     const persistentAttributes =
@@ -98,14 +103,14 @@ exports.ShotResultIntentHandler = {
                     attributesManager.setPersistentAttributes(persistentAttributes);
                     await attributesManager.savePersistentAttributes();
 
-                    speakOutput = battleshipsHitIsSunkWin(playerWins, alexaWins);
+                    speakOutput = bsMissHitIsSunkWin(playerWins, alexaWins);
                     sessionAttributes.bData = {
                         bState: 'gameOver'
                     };
                     break;
                 }
                 case 'miss': {
-                    speakOutput = battleshipsAlexaMiss;
+                    speakOutput = bsAlexaMiss;
                     bData.bState = 'playerTurn';
                     break;
                 }
@@ -116,7 +121,7 @@ exports.ShotResultIntentHandler = {
                     bData.shotCol = shootObj.shotCol;
                     bData.alexaShotsBoard = shootObj.alexaShotsBoard;
 
-                    speakOutput = battleshipsHitOrSunk(shootObj.outputRow, shootObj.outputCol);
+                    speakOutput = bsHitSunk(shootObj.outputRow, shootObj.outputCol);
                     break;
                 }
                 case 'alexaWin': {
@@ -138,7 +143,7 @@ exports.ShotResultIntentHandler = {
                     attributesManager.setPersistentAttributes(persistentAttributes);
                     await attributesManager.savePersistentAttributes();
 
-                    speakOutput = battleshipsAlexaWin(playerWins, alexaWins);
+                    speakOutput = bsAlexaWin(playerWins, alexaWins);
                     sessionAttributes.bData = {
                         bState: 'gameOver'
                     };

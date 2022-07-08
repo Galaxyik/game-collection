@@ -1,12 +1,12 @@
 const Alexa = require('ask-sdk');
 
-const { noState, wrongState, battleshipsSavingGame } = require('../speakOutputs');
+const { noState, wrongState, bsLoadSave } = require('../speakOutputs');
 
-exports.SaveGameIntentHandler = {
+exports.ResumeGameIntentHandler = {
     canHandle(handlerInput) {
         return (
             Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest' &&
-            Alexa.getIntentName(handlerInput.requestEnvelope) === 'SaveGameIntent'
+            Alexa.getIntentName(handlerInput.requestEnvelope) === 'ResumeGameIntent'
         );
     },
     async handle(handlerInput) {
@@ -26,8 +26,11 @@ exports.SaveGameIntentHandler = {
         const { state } = sessionAttributes;
         const bData = sessionAttributes.bData || {};
 
-        if (state !== 'battleships' || (state === 'battleships' && bData.bState !== 'playerTurn')) {
-            // SaveGameIntentHandler should not be called in this state
+        if (
+            state !== 'battleships' ||
+            (state === 'battleships' && bData.bState !== 'menuSaveExists')
+        ) {
+            // ResumeGameIntent should not be called in this state
             speakOutput = wrongState;
             return handlerInput.responseBuilder
                 .speak(speakOutput)
@@ -35,23 +38,21 @@ exports.SaveGameIntentHandler = {
                 .getResponse();
         }
 
-        // SaveGameIntent is called in the correct state
+        // ResumeGameIntent is called in the correct state
 
         // Get Data from DB
         const persistentAttributes = (await attributesManager.getPersistentAttributes()) || {};
 
         if (state === 'battleships') {
-            // Save current bData
-            persistentAttributes.players[sessionAttributes.playerName].battleships.save = bData;
-
-            speakOutput = battleshipsSavingGame;
-            bData.bState = 'saveGame';
+            // Load savegame data
+            speakOutput = bsLoadSave;
+            const { save } = persistentAttributes.players[sessionAttributes.playerName].battleships;
+            sessionAttributes.bData = Object.assign({}, save);
+            sessionAttributes.bData.bState = 'playerTurn';
         }
 
-        // Save session and persistent attributes
+        // Save session attributes
         attributesManager.setSessionAttributes(sessionAttributes);
-        attributesManager.setPersistentAttributes(persistentAttributes);
-        await attributesManager.savePersistentAttributes();
 
         return handlerInput.responseBuilder.speak(speakOutput).reprompt(speakOutput).getResponse();
     }

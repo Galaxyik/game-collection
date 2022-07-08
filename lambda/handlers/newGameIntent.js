@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk');
 
-const { noState, wrongState, newGame } = require('../speakOutputs');
+const { noState, wrongState, bsNewGame } = require('../speakOutputs');
 const { selectPiecesBoard } = require('../utils/piecesBoards');
 const { boardSize } = require('../utils/battleshipsConstants');
 
@@ -46,7 +46,7 @@ exports.NewGameIntentHandler = {
 
         if (state === 'battleships') {
             // Initialize data for new game
-            speakOutput = newGame;
+            speakOutput = bsNewGame;
 
             sessionAttributes.bData = {
                 bState: 'playerTurn',

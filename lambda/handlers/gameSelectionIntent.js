@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk');
 
-const { noState, wrongState, battleshipsSave, battleshipsNoSave } = require('../speakOutputs');
+const { noState, wrongState, bsMenuSave, bsMenuNoSave } = require('../speakOutputs');
 
 exports.GameSelectionIntentHandler = {
     canHandle(handlerInput) {
@@ -46,14 +46,14 @@ exports.GameSelectionIntentHandler = {
 
             if (persistentAttributes.players[sessionAttributes.playerName].battleships.save) {
                 // Save exists
-                speakOutput = battleshipsSave;
+                speakOutput = bsMenuSave;
 
                 sessionAttributes.bData = {
                     bState: 'menuSaveExists'
                 };
             } else {
                 // Save does not exist
-                speakOutput = battleshipsNoSave;
+                speakOutput = bsMenuNoSave;
 
                 sessionAttributes.bData = {
                     bState: 'menuSaveNotExists'
