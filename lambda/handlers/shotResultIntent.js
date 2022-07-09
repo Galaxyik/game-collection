@@ -77,10 +77,7 @@ exports.ShotResultIntentHandler = {
                     bData.shotCol = shootObj.shotCol;
                     bData.alexaShotsBoard = shootObj.alexaShotsBoard;
 
-                    speakOutput = bsMissHitIsSunk(
-                        shootObj.outputRow,
-                        shootObj.outputCol
-                    );
+                    speakOutput = bsMissHitIsSunk(shootObj.outputRow, shootObj.outputCol);
                     break;
                 }
                 case 'missIsSunkWin':

@@ -2,11 +2,9 @@ const Alexa = require('ask-sdk');
 
 const { requestName } = require('../speakOutputs');
 
-exports.ContinueIntentHandler = {
+exports.LaunchRequestHandler = {
     canHandle(handlerInput) {
-        return (
-            Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest'
-        );
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
         const { attributesManager } = handlerInput;
@@ -14,9 +12,9 @@ exports.ContinueIntentHandler = {
         const speakOutput = requestName;
 
         // Add state to session attributes
-        sessionAttributes.state = 'userSelection';  
+        sessionAttributes.state = 'userSelection';
         attributesManager.setSessionAttributes(sessionAttributes);
 
         return handlerInput.responseBuilder.speak(speakOutput).reprompt(speakOutput).getResponse();
     }
-}
+};
