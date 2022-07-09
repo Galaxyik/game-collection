@@ -2,7 +2,7 @@ const Alexa = require('ask-sdk');
 
 const { requestName } = require('../speakOutputs');
 
-exports.ContinueIntentHandler = {
+exports.LaunchRequestHandler = {
     canHandle(handlerInput) {
         return (
             Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest'
