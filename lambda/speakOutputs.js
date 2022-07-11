@@ -4,6 +4,9 @@ const noState = "I'm sorry, game collection was not started correctly. Please tr
 // Wrong state
 const wrongState = "You can't do that here.";
 
+// Exit Skill
+const exitSkill = 'Goodbye!';
+
 // userSelection
 const requestName = 'Welcome to game collection. Who is playing?';
 const nameInDB = (name) =>
@@ -63,6 +66,7 @@ const bsContinue = "Continuing the game. It's your turn.";
 module.exports = {
     noState,
     wrongState,
+    exitSkill,
     requestName,
     nameInDB,
     nameNotInDB,
