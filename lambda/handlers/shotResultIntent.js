@@ -37,7 +37,7 @@ exports.ShotResultIntentHandler = {
         const bData = sessionAttributes.bData || {};
 
         if (state !== 'battleships' || (state === 'battleships' && bData.bState !== 'alexaTurn')) {
-            // HitIntent should not be called in this state
+            // ShotResultIntent should not be called in this state
             speakOutput = wrongState;
             return handlerInput.responseBuilder
                 .speak(speakOutput)
@@ -45,7 +45,7 @@ exports.ShotResultIntentHandler = {
                 .getResponse();
         }
 
-        // HitIntent is called in the correct state
+        // ShotResultIntent is called in the correct state
 
         if (state === 'battleships') {
             // Handle player response to alexa shot
