@@ -16,8 +16,8 @@ const nameNotInDB = (name) =>
 
 // gameSelection
 const bsMenuSave =
-    'Do you want to start a new game, resume from the old save, or get an explanation?';
-const bsMenuNoSave = 'Do you want to start a new game or get an explanation?';
+    'Do you want to start a new game, resume from the old save, or get an explanation, or the high score?';
+const bsMenuNoSave = 'Do you want to start a new game, or get an explanation, or the high score?';
 
 // go to gameSelection after battleships
 const bsGoToGS =
@@ -27,6 +27,9 @@ const bsGoToGS =
 const bsNewGame = "Starting new game. It's your turn.";
 const bsExplanation =
     'Place your ships on a ten by ten board. You have one size five battleship, two size four cruisers, three size three destroyers, and four size two submarines. There must be at least one space between two ships. To shoot say: Shoot at row X and column Y. If I shoot, answer me with miss, hit, or sunk.';
+const bsHighscore = (playerWins, alexaWins) =>
+    `You won ${playerWins} games and I won ${alexaWins}.`;
+const bsHighscorePlayerTurn = "It's your turn";
 
 // battleships: menuSaveExists
 const bsLoadSave = "Loading savegame. It's your turn.";
@@ -76,6 +79,8 @@ module.exports = {
     bsGoToGS,
     bsNewGame,
     bsExplanation,
+    bsHighscore,
+    bsHighscorePlayerTurn,
     bsLoadSave,
     bsOutOfBounds,
     bsPlayerHit,
