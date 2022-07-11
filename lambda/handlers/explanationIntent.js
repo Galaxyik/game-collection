@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk');
 
-const { noState, wrongState, bsExplanation } = require('../speakOutputs');
+const { noState, wrongState, bsExplanation, bsMenuSave, bsMenuNoSave } = require('../speakOutputs');
 
 exports.ExplanationIntentHandler = {
     canHandle(handlerInput) {
@@ -44,6 +44,12 @@ exports.ExplanationIntentHandler = {
 
         if (state === 'battleships') {
             speakOutput = bsExplanation;
+
+            if (bData.bState === 'menuSaveExists') {
+                speakOutput += ` ${bsMenuSave}`;
+            } else {
+                speakOutput += ` ${bsMenuNoSave}`;
+            }
         }
 
         return handlerInput.responseBuilder.speak(speakOutput).reprompt(speakOutput).getResponse();

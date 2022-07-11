@@ -25,7 +25,8 @@ const bsGoToGS =
 
 // battleships: menuSaveExists, menuSaveNotExists
 const bsNewGame = "Starting new game. It's your turn.";
-const bsExplanation = 'Battleships Explanation TBA';
+const bsExplanation =
+    'Place your ships on a ten by ten board. You have one size five battleship, two size four cruisers, three size three destroyers, and four size two submarines. There must be at least one space between two ships. To shoot say: Shoot at row X and column Y. If I shoot, answer me with miss, hit, or sunk.';
 
 // battleships: menuSaveExists
 const bsLoadSave = "Loading savegame. It's your turn.";
