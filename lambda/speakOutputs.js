@@ -50,6 +50,8 @@ const bsPlayerMiss = (outputRow, outputCol) =>
     `Miss! It's my turn. I shoot at row ${outputRow} column ${outputCol}.`;
 const bsPlayerWin = (playerWins, alexaWins) =>
     `You win, you sank all my ships! In total you won ${playerWins} times and I won ${alexaWins} times.`;
+const bsWrongStateAlexaTurn = (shotRow, shotCol) =>
+    `Please answer with miss, hit, or sunk. I shoot at row ${shotRow} and column ${shotCol}.`;
 
 // battleships: alexaTurn
 const bsHitSunk = (outputRow, outputCol) =>
@@ -102,6 +104,7 @@ module.exports = {
     bsAlexaMiss,
     bsAlexaWin,
     bsMissHitIsSunkWin,
+    bsWrongStateAlexaTurn,
     bsContinueClose,
     bsContinue
 };

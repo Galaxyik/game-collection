@@ -4,11 +4,12 @@ const Alexa = require('ask-sdk');
 const {
     noState,
     wrongState,
+    bsWrongStateAlexaTurn,
     bsOutOfBounds,
     bsPlayerHit,
     bsPlayerSunk,
     bsPlayerMiss,
-    bsPlayerWin
+    bsPlayerWin,
 } = require('../speakOutputs');
 const { boardSize, directions, shipsCount } = require('../utils/battleshipsConstants');
 const { shoot } = require('../utils/alexaShot');
@@ -42,7 +43,11 @@ exports.ShotIntentHandler = {
 
         if (state !== 'battleships' || (state === 'battleships' && bData.bState !== 'playerTurn')) {
             // ShotIntent should not be called in this state
-            speakOutput = wrongState;
+            if (state === 'battleships' && bData.bState === 'alexaTurn') {
+                speakOutput = bsWrongStateAlexaTurn(bData.shotRow, bData.shotCol);
+            } else {
+                speakOutput = wrongState;
+            }
             return handlerInput.responseBuilder
                 .speak(speakOutput)
                 .reprompt(speakOutput)
