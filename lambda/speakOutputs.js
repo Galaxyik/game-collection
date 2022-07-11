@@ -7,6 +7,13 @@ const wrongState = "You can't do that here.";
 // Exit Skill
 const exitSkill = 'Goodbye!';
 
+// Fallback
+const fallbackDefault = "Sorry, I don't know about that. Please try again.";
+const fallbackBsPlayerTurn =
+    "Sorry, I don't know that. You can shoot by saying: Shoot at row X column Y.";
+const fallbackBsAlexaTurn = (shotRow, shotCol) =>
+    `Sorry, I don't know that. Please answer with miss, hit, or sunk. I shoot at row ${shotRow} and column ${shotCol}.`;
+
 // userSelection
 const requestName = 'Welcome to game collection. Who is playing?';
 const nameInDB = (name) =>
@@ -71,6 +78,9 @@ module.exports = {
     noState,
     wrongState,
     exitSkill,
+    fallbackDefault,
+    fallbackBsPlayerTurn,
+    fallbackBsAlexaTurn,
     requestName,
     nameInDB,
     nameNotInDB,
