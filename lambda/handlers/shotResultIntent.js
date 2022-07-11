@@ -82,7 +82,7 @@ exports.ShotResultIntentHandler = {
                 }
                 case 'missIsSunkWin':
                 case 'hitIsSunkWin': {
-                    // Get Data from DB
+                    // Get data from DB
                     const persistentAttributes =
                         (await attributesManager.getPersistentAttributes()) || {};
 
@@ -122,7 +122,7 @@ exports.ShotResultIntentHandler = {
                     break;
                 }
                 case 'alexaWin': {
-                    // Get Data from DB
+                    // Get data from DB
                     const persistentAttributes =
                         (await attributesManager.getPersistentAttributes()) || {};
 
