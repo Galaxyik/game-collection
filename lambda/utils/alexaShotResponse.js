@@ -68,6 +68,7 @@ function hit(bData) {
         updatePossShotDirHit();
     }
     ensureShotDirBounds();
+    removeAlreadyHitDir();
 
     // Catches the case when the affected ship is on the edge of the board and
     // should already be sunk, but the player says 'hit'
@@ -148,6 +149,40 @@ function ensureShotDirBounds() {
     }
     if (shotCol === 9) {
         delete gameState.possDirections.E;
+    }
+}
+
+/**
+ * Remove a possible direction when a field in that direction was previously hit
+ */
+function removeAlreadyHitDir() {
+    const { possDirections } = gameState;
+    if (
+        Object.prototype.hasOwnProperty.call(possDirections, 'N') &&
+        alexaShotsBoard[shotRow + possDirections.N][shotCol][1] === 'X'
+    ) {
+        delete possDirections.N;
+    }
+
+    if (
+        Object.prototype.hasOwnProperty.call(possDirections, 'S') &&
+        alexaShotsBoard[shotRow + possDirections.S][shotCol][1] === 'X'
+    ) {
+        delete possDirections.S;
+    }
+
+    if (
+        Object.prototype.hasOwnProperty.call(possDirections, 'W') &&
+        alexaShotsBoard[shotRow][shotCol + possDirections.W][1] === 'X'
+    ) {
+        delete possDirections.W;
+    }
+
+    if (
+        Object.prototype.hasOwnProperty.call(possDirections, 'E') &&
+        alexaShotsBoard[shotRow][shotCol + possDirections.E][1] === 'X'
+    ) {
+        delete possDirections.E;
     }
 }
 
