@@ -51,7 +51,7 @@ const bsPlayerSunk = "Ship sunk! It's your turn again.";
 const bsPlayerMiss = (outputRow, outputCol) =>
     `Miss! It's my turn. I shoot at row ${outputRow} column ${outputCol}.`;
 const bsPlayerWin = (playerWins, alexaWins) =>
-    `You win, you sank all my ships! In total you won ${playerWins} times and I won ${alexaWins} times.`;
+    `You win, you sank all my ships! In total you won ${playerWins} times and I won ${alexaWins} times. Do you want to exit the skill or go back to the game selection?`;
 const bsWrongStateAlexaTurn = (shotRow, shotCol) =>
     `Please answer with miss, hit, or sunk. I shoot at row ${shotRow + 1} and column ${
         shotCol + 1
@@ -67,7 +67,7 @@ const bsMissHitIsSunk = (outputRow, outputCol) =>
     )}`;
 const bsAlexaMiss = "It's your turn";
 const bsAlexaWin = (playerWins, alexaWins) =>
-    `I win, i sank all your ships. In total I won ${alexaWins} times and you won ${playerWins} times.`;
+    `I win, i sank all your ships. In total I won ${alexaWins} times and you won ${playerWins} times. Do you want to exit the skill or go back to the game selection?`;
 const bsMissHitIsSunkWin = (playerWins, alexaWins) =>
     `The ship should already be sunk and will be treated as such! ${bsAlexaWin(
         playerWins,
