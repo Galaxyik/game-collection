@@ -153,33 +153,34 @@ function ensureShotDirBounds() {
 }
 
 /**
- * Remove a possible direction when a field in that direction was previously hit
+ * Ensures that Alexa does not shoot at a already hit field when shooting in one direction.
  */
 function removeAlreadyHitDir() {
     const { possDirections } = gameState;
+
     if (
-        Object.prototype.hasOwnProperty.call(possDirections, 'N') &&
+        Object.keys(possDirections)[0] === 'N' &&
         alexaShotsBoard[shotRow + possDirections.N][shotCol][1] === 'X'
     ) {
         delete possDirections.N;
     }
 
     if (
-        Object.prototype.hasOwnProperty.call(possDirections, 'S') &&
+        Object.keys(possDirections)[0] === 'S' &&
         alexaShotsBoard[shotRow + possDirections.S][shotCol][1] === 'X'
     ) {
         delete possDirections.S;
     }
 
     if (
-        Object.prototype.hasOwnProperty.call(possDirections, 'W') &&
+        Object.keys(possDirections)[0] === 'W' &&
         alexaShotsBoard[shotRow][shotCol + possDirections.W][1] === 'X'
     ) {
         delete possDirections.W;
     }
 
     if (
-        Object.prototype.hasOwnProperty.call(possDirections, 'E') &&
+        Object.keys(possDirections)[0] === 'E' &&
         alexaShotsBoard[shotRow][shotCol + possDirections.E][1] === 'X'
     ) {
         delete possDirections.E;
