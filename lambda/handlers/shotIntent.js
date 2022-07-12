@@ -9,7 +9,7 @@ const {
     bsPlayerHit,
     bsPlayerSunk,
     bsPlayerMiss,
-    bsPlayerWin,
+    bsPlayerWin
 } = require('../speakOutputs');
 const { boardSize, directions, shipsCount } = require('../utils/battleshipsConstants');
 const { shoot } = require('../utils/alexaShot');
