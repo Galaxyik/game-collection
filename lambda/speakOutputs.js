@@ -12,7 +12,7 @@ const fallbackDefault = "Sorry, I don't know about that. Please try again.";
 const fallbackBsPlayerTurn =
     "Sorry, I don't know that. You can shoot by saying: Shoot at row X column Y.";
 const fallbackBsAlexaTurn = (shotRow, shotCol) =>
-    `Sorry, I don't know that. Please answer with miss, hit, or sunk. I shoot at row ${shotRow} and column ${shotCol}.`;
+    `Sorry, I don't know that. Please answer with miss, hit, or sunk. I shoot at row ${shotRow + 1} and column ${shotCol + 1}.`;
 
 // userSelection
 const requestName = 'Welcome to game collection. Who is playing?';
@@ -51,7 +51,7 @@ const bsPlayerMiss = (outputRow, outputCol) =>
 const bsPlayerWin = (playerWins, alexaWins) =>
     `You win, you sank all my ships! In total you won ${playerWins} times and I won ${alexaWins} times.`;
 const bsWrongStateAlexaTurn = (shotRow, shotCol) =>
-    `Please answer with miss, hit, or sunk. I shoot at row ${shotRow} and column ${shotCol}.`;
+    `Please answer with miss, hit, or sunk. I shoot at row ${shotRow + 1} and column ${shotCol + 1}.`;
 
 // battleships: alexaTurn
 const bsHitSunk = (outputRow, outputCol) =>
