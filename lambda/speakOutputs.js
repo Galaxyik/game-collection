@@ -75,7 +75,7 @@ const bsMissHitIsSunkWin = (playerWins, alexaWins) =>
     )}`;
 
 // battleships: playerTurn
-const bsContinueClose = 'Do you want to continue the game or close the app?';
+const bsContinueClose = 'Do you want to continue the game or close the skill?';
 
 // battleships: saveGame
 const bsContinue = "Continuing the game. It's your turn.";
