@@ -52,7 +52,7 @@ exports.ResumeGameIntentHandler = {
 
             // Makes sure that N S W E are in the right order
             const possDirections = sessionAttributes.bData.gameState.possDirections || {};
-            Object.keys(directions).forEach(direction => {
+            Object.keys(directions).forEach((direction) => {
                 if (Object.prototype.hasOwnProperty.call(possDirections, direction)) {
                     const tmp = possDirections[direction];
                     delete possDirections[direction];
