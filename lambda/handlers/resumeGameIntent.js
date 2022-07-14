@@ -52,13 +52,15 @@ exports.ResumeGameIntentHandler = {
 
             // Makes sure that N S W E are in the right order
             const possDirections = sessionAttributes.bData.gameState.possDirections || {};
-            Object.keys(directions).forEach((direction) => {
-                if (Object.prototype.hasOwnProperty.call(possDirections, direction)) {
-                    const tmp = possDirections[direction];
-                    delete possDirections[direction];
-                    possDirections[direction] = tmp;
-                }
-            });
+            if (Object.keys(possDirections).length !== 0) {
+                Object.keys(directions).forEach((direction) => {
+                    if (Object.prototype.hasOwnProperty.call(possDirections, direction)) {
+                        const tmp = possDirections[direction];
+                        delete possDirections[direction];
+                        possDirections[direction] = tmp;
+                    }
+                });
+            }
 
             sessionAttributes.bData.bState = 'playerTurn';
         }
