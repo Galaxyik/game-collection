@@ -51,7 +51,7 @@ exports.HighscoreIntentHandler = {
         // HighscoreIntent is called in the correct state
 
         if (state === 'battleships') {
-            // Get
+            // Get data from DB
             const persistentAttributes = (await attributesManager.getPersistentAttributes()) || {};
 
             const { playerWins } =
