@@ -1,6 +1,7 @@
 const Alexa = require('ask-sdk');
 
 const { noState, wrongState, bsLoadSave } = require('../speakOutputs');
+const { directions } = require('../utils/battleshipsConstants');
 
 exports.ResumeGameIntentHandler = {
     canHandle(handlerInput) {
@@ -48,6 +49,17 @@ exports.ResumeGameIntentHandler = {
             speakOutput = bsLoadSave;
             const { save } = persistentAttributes.players[sessionAttributes.playerName].battleships;
             sessionAttributes.bData = Object.assign({}, save);
+
+            // Makes sure that N S W E are in the right order
+            const possDirections = sessionAttributes.bData.gameState.possDirections || {};
+            Object.keys(directions).forEach(direction => {
+                if (Object.prototype.hasOwnProperty.call(possDirections, direction)) {
+                    const tmp = possDirections[direction];
+                    delete possDirections[direction];
+                    possDirections[direction] = tmp;
+                }
+            });
+
             sessionAttributes.bData.bState = 'playerTurn';
         }
 
