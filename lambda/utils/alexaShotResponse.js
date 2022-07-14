@@ -158,31 +158,29 @@ function ensureShotDirBounds() {
 function removeAlreadyHitDir() {
     const { possDirections } = gameState;
 
-    if (
+    const delN =
         Object.keys(possDirections)[0] === 'N' &&
-        alexaShotsBoard[shotRow + possDirections.N][shotCol][1] === 'X'
-    ) {
+        alexaShotsBoard[shotRow + possDirections.N][shotCol][1] === 'X';
+    const delS =
+        Object.keys(possDirections)[0] === 'S' &&
+        alexaShotsBoard[shotRow + possDirections.S][shotCol][1] === 'X';
+    const delW =
+        Object.keys(possDirections)[0] === 'W' &&
+        alexaShotsBoard[shotRow][shotCol + possDirections.W][1] === 'X';
+    const delE =
+        Object.keys(possDirections)[0] === 'E' &&
+        alexaShotsBoard[shotRow][shotCol + possDirections.E][1] === 'X';
+
+    if (delN) {
         delete possDirections.N;
     }
-
-    if (
-        Object.keys(possDirections)[0] === 'S' &&
-        alexaShotsBoard[shotRow + possDirections.S][shotCol][1] === 'X'
-    ) {
+    if (delS) {
         delete possDirections.S;
     }
-
-    if (
-        Object.keys(possDirections)[0] === 'W' &&
-        alexaShotsBoard[shotRow][shotCol + possDirections.W][1] === 'X'
-    ) {
+    if (delW) {
         delete possDirections.W;
     }
-
-    if (
-        Object.keys(possDirections)[0] === 'E' &&
-        alexaShotsBoard[shotRow][shotCol + possDirections.E][1] === 'X'
-    ) {
+    if (delE) {
         delete possDirections.E;
     }
 }
