@@ -54,6 +54,8 @@ exports.ShotResultIntentHandler = {
 
             const shootResultObj = hitOrMiss(shotResult, bData);
 
+            const { removedDir } = shootResultObj;
+
             bData.gameState = shootResultObj.gameState;
             bData.playerShipsSunk = shootResultObj.playerShipsSunk;
             bData.alexaShotsBoard = shootResultObj.alexaShotsBoard;
@@ -61,7 +63,7 @@ exports.ShotResultIntentHandler = {
             switch (shootResultObj.result) {
                 case 'hit': {
                     // Shoot
-                    const shootObj = shoot(bData);
+                    const shootObj = shoot(bData, removedDir);
                     bData.shotRow = shootObj.shotRow;
                     bData.shotCol = shootObj.shotCol;
                     bData.alexaShotsBoard = shootObj.alexaShotsBoard;
@@ -72,7 +74,7 @@ exports.ShotResultIntentHandler = {
                 case 'missIsSunk':
                 case 'hitIsSunk': {
                     // Shoot
-                    const shootObj = shoot(bData);
+                    const shootObj = shoot(bData, removedDir);
                     bData.shotRow = shootObj.shotRow;
                     bData.shotCol = shootObj.shotCol;
                     bData.alexaShotsBoard = shootObj.alexaShotsBoard;
@@ -113,7 +115,7 @@ exports.ShotResultIntentHandler = {
                 }
                 case 'sunk': {
                     // Shoot
-                    const shootObj = shoot(bData);
+                    const shootObj = shoot(bData, removedDir);
                     bData.shotRow = shootObj.shotRow;
                     bData.shotCol = shootObj.shotCol;
                     bData.alexaShotsBoard = shootObj.alexaShotsBoard;

@@ -10,6 +10,8 @@ let alexaShotsBoard;
 let shotRow;
 let shotCol;
 
+let removedDir = false;
+
 /**
  * Handles the result of a shot (hit, miss, sunk).
  *
@@ -46,7 +48,8 @@ function hitOrMiss(shotResult, bData) {
         result,
         gameState,
         playerShipsSunk,
-        alexaShotsBoard
+        alexaShotsBoard,
+        removedDir
     };
 }
 
@@ -154,6 +157,7 @@ function ensureShotDirBounds() {
 
 /**
  * Ensures that Alexa does not shoot at a already hit field when shooting in one direction.
+ * @returns true if a direction was removed
  */
 function removeAlreadyHitDir() {
     const { possDirections } = gameState;
@@ -183,6 +187,8 @@ function removeAlreadyHitDir() {
     if (delE) {
         delete possDirections.E;
     }
+
+    removedDir = delN || delS || delW || delE;
 }
 
 /**

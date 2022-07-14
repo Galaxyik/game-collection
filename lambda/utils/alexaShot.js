@@ -12,7 +12,7 @@ let shotCol;
 /**
  * Shoots at a random field if no ship is hit. Otherwise, it shoots at the ship
  */
-exports.shoot = (bData) => {
+exports.shoot = (bData, resetDir) => {
     gameState = bData.gameState;
     alexaShotsBoard = bData.alexaShotsBoard;
     shotRow = bData.shotRow;
@@ -31,7 +31,7 @@ exports.shoot = (bData) => {
         // A ship has already been hit
         const shotDir = Object.keys(gameState.possDirections)[0];
 
-        if (alexaShotsBoard[shotRow][shotCol][0] !== '0') {
+        if (alexaShotsBoard[shotRow][shotCol][0] !== '0' && !resetDir) {
             // The previous shot was a hit
             if (shotDir === 'N' || shotDir === 'S') {
                 row = shotRow + gameState.possDirections[shotDir];
@@ -40,8 +40,8 @@ exports.shoot = (bData) => {
                 row = shotRow;
                 col = shotCol + gameState.possDirections[shotDir];
             }
-        } else if (alexaShotsBoard[shotRow][shotCol][0] === '0') {
-            // The previous shot was a miss
+        } else if (alexaShotsBoard[shotRow][shotCol][0] === '0' || resetDir) {
+            // The previous shot was a miss or the direction was reset
             if (shotDir === 'N' || shotDir === 'S') {
                 row = gameState.firstShotRow + gameState.possDirections[shotDir];
                 col = gameState.firstShotCol;
