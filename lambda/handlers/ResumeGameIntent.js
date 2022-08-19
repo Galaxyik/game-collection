@@ -22,9 +22,10 @@ exports.ResumeGameIntentHandler = {
 
         const { state } = sessionAttributes;
         const bData = sessionAttributes.bData || {};
+        const rData = sessionAttributes.rData || {};
 
         if (
-            state !== 'battleships' ||
+            state !== 'battleships' && state !== 'rps' ||
             (state === 'battleships' && bData.bState !== 'menuSaveExists')
         ) {
             // ResumeGameIntent should not be called in this state
@@ -42,6 +43,13 @@ exports.ResumeGameIntentHandler = {
             speakOutput = resumeGame;
             const { save } = persistentAttributes.players[sessionAttributes.playerName].battleships;
             sessionAttributes.bData = Object.assign({ bState: 'playerTurn' }, save);
+        }
+
+        if (state === 'rps') {
+            // Load savegame data
+            speakOutput = resumeGame;
+            const { save } = persistentAttributes.players[sessionAttributes.playerName].rps;
+            sessionAttributes.rData = Object.assign({ bState: 'playerTurn' }, save);
         }
 
         // Save session attributes

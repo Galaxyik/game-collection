@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk');
 
-const { newGame } = require('../speakOutputs');
+const { newGame, rpsAskForNumberOfTurns } = require('../speakOutputs');
 const { selectPiecesBoard } = require('../utils/piecesBoards');
 const { boardSize } = require('../utils/battleshipsConstants');
 
@@ -24,6 +24,7 @@ exports.NewGameIntentHandler = {
 
         const { state } = sessionAttributes;
         const bData = sessionAttributes.bData || {};
+        const rData = sessionAttributes.rData || {};
 
         if (
             state !== 'battleships' ||
@@ -34,6 +35,15 @@ exports.NewGameIntentHandler = {
             // NewGameIntent should not be called in this state
 
             return null; // TODO
+        }
+
+        if ( 
+            state !== 'rps' ||
+            (state === 'battleships' &&
+                rData.rState !== 'menuSaveExists' &&
+                rData.rState !== 'menuSaveNotExists')
+        ) {
+            return null; //TODO
         }
 
         // NewGameIntent is called in the correct state
@@ -52,6 +62,15 @@ exports.NewGameIntentHandler = {
                 alexaPiecesBoard: selectPiecesBoard(),
                 shotRow: 0,
                 shotCol: 0
+            };
+        }
+
+        if (state === 'rps') {
+            speakOutput = rpsAskForNumberOfTurns;
+
+            sessionAttributes.rData = {
+                rState: 'playerTurn',
+                gameState: null
             };
         }
 

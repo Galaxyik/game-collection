@@ -57,6 +57,22 @@ exports.GameSelectionIntentHandler = {
         } else if (selectedGame === 'rock paper scissors') {
             sessionAttributes.state = 'rps';
 
+            if (persistentAttributes.players[sessionAttributes.playerName].rps.save) {
+                // Save exists
+                speakOutput = battleshipsSave;
+
+                sessionAttributes.rData = {
+                    rState: 'menuSaveExists'
+                };
+            } else {
+                // Save does not exist
+                speakOutput = battleshipsNoSave;
+
+                sessionAttributes.rData = {
+                    rState: 'menuSaveNotExists'
+                };
+            }
+
             // TODO
             speakOutput = 'TBA';
         } else {

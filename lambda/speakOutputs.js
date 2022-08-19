@@ -43,6 +43,29 @@ const battleshipsHitIsSunkWin = (playerWins, alexaWins) =>
         alexaWins
     )}`;
 
+// rock paper scissors:
+const rpsExplanation = 'Rock Paper Scissors TBA';
+
+// rock paper scissors: beforeRPSGame
+const rpsAskForNumberOfTurns = "How many rounds do you want to play?";
+const rpsNoNegativeTries = "You cannot have a negative amount of tries. Choose one of the following options: Rock, paper, or scissors."
+const rpsTooManyTries = "That's a pretty big number, don't you think? Choose one of the following options: Rock, paper, or scissors."
+const rpsRightAmountOfTries = "This is an acceptable amount of tries. Choose one of the following options: Rock, paper, or scissors."
+
+// rock paper scissors: RPSGameStart
+const rpsNewGame = "Choose one of the following options: Rock, paper, or scissors."
+
+// rock paper scissors: RPSTurn
+const rpsTie = "There's a tie."
+const rpsNoViableOption = "That's not a viable option. Please try again."
+const rpsPlayerWinTurn = "You have won." 
+const rpsPlayerLoseTurn = "You have lost." 
+
+// rock paper scissors: AfterRPSGameStart
+const rpsGameWin = "You have WON and reached the maximum amount of tries." 
+const rpsGameLose = "You have LOST and reached the maximum amount of tries." 
+const rpsGameTie = "Both opponents have the same amount of points..."
+
 module.exports = {
     nameInDB,
     nameNotInDB,
@@ -60,5 +83,18 @@ module.exports = {
     battleshipsHitIsSunk,
     battleshipsAlexaMiss,
     battleshipsAlexaWin,
-    battleshipsHitIsSunkWin
+    battleshipsHitIsSunkWin,
+    rpsExplanation,
+    rpsAskForNumberOfTurns,
+    rpsNoNegativeTries,
+    rpsTooManyTries,
+    rpsRightAmountOfTries,
+    rpsNewGame,
+    rpsTie,
+    rpsNoViableOption,
+    rpsPlayerWinTurn,
+    rpsPlayerLoseTurn,
+    rpsGameWin,
+    rpsGameLose,
+    rpsGameTie
 };
